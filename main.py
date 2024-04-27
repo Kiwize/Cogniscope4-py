@@ -13,12 +13,12 @@ class Window(Tk):
         menu_bar = Menu(self)
 
         menu_file = Menu(menu_bar, tearoff=0)
-        menu_file.add_command(label="New ⌘N", command=self.do_something)
-        menu_file.add_command(label="Open ⌘O", command=self.open_file)
-        menu_file.add_command(label="Save ⌘S", command=self.do_something)
-        menu_file.add_command(label="Save as ⇧⌘S", command=self.do_something)
+        menu_file.add_command(label="New", accelerator="⌘N", command=self.do_something)
+        menu_file.add_command(label="Open", accelerator="⌘O", command=self.open_file)
+        menu_file.add_command(label="Save", accelerator="⌘S", command=self.do_something)
+        menu_file.add_command(label="Save as", accelerator="⇧⌘S", command=self.do_something)
         menu_file.add_separator()
-        menu_file.add_command(label="Exit ⌘X", command=self.quit)
+        menu_file.add_command(label="Exit", accelerator="⌘X", command=self.quit)
 
         menu_bar.add_cascade(label="File", menu=menu_file)
 
@@ -31,13 +31,13 @@ class Window(Tk):
         menu_bar.add_cascade(label="Edit", menu=menu_edit)
 
         menu_navigation = Menu(menu_bar, tearoff=0)
-        menu_navigation.add_command(label="Triggering Question ⌘T")
-        menu_navigation.add_command(label="Generation ⌘G")
-        menu_navigation.add_command(label="Clarification ⌘L")
-        menu_navigation.add_command(label="First Voting ⌘V")
-        menu_navigation.add_command(label="Clustering ⇧⌘C")
-        menu_navigation.add_command(label="Second Voting ⇧⌘N")
-        menu_navigation.add_command(label="Mapping ⌘M")
+        menu_navigation.add_command(label="Triggering Question", accelerator="⌘T")
+        menu_navigation.add_command(label="Generation", accelerator="⌘G")
+        menu_navigation.add_command(label="Clarification", accelerator="⌘L")
+        menu_navigation.add_command(label="First Voting", accelerator="⌘V")
+        menu_navigation.add_command(label="Clustering", accelerator="⇧⌘C")
+        menu_navigation.add_command(label="Second Voting", accelerator="⇧⌘N")
+        menu_navigation.add_command(label="Mapping", accelerator="⌘M")
         menu_bar.add_cascade(label="Navigation", menu=menu_navigation)
 
         menu_reports = Menu(menu_bar, tearoff=0)
