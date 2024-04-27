@@ -1,0 +1,5 @@
+PR_defaultLanguage=EN
+MN_File_EN=File
+MN_File_EL=Αρχείο
+MN_File_TR=Dosya
+
