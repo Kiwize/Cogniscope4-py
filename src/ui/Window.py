@@ -1,15 +1,47 @@
-from tkinter import *
-from src.cfg.Config import ConfigReader
+from tkinter import Tk, Menu, Frame
+from src.ui.FrameVersion import FrameVersion
+from src.ui.FrameClarification import FrameClarification
+from src.ui.FrameClustering import FrameClustering
+from src.ui.FrameFirstVoting import FrameFirstVoting
+from src.ui.FrameGeneration import FrameGeneration
+from src.ui.FrameMapping import FrameMapping
+from src.ui.FrameSecondVoting import FrameSecondVoting
+from src.ui.FrameTriggeringQuestion import FrameTriggeringQuestion
 
 class Window(Tk):
 
     def __init__(self, configReader):
         Tk.__init__(self)
         self.configReader = configReader
+
+
+        container = Frame(self)
+        container.pack(side="top", fill="both", expand=True)
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
+
+        self.frames = {}
+        for F in (FrameVersion, FrameClarification, FrameClustering, FrameFirstVoting, FrameGeneration, FrameMapping, FrameSecondVoting, FrameTriggeringQuestion) :
+            page_name = F.__name__
+            frame = F(parent=container)
+            self.frames[page_name] = frame
+
+            # put all of the pages in the same location;
+            # the one on the top of the stacking order
+            # will be the one that is visible.
+            frame.grid(row=0, column=0, sticky="nsew")
+            
+        #Display the default frame    
+        self.show_frame("FrameVersion")
+
         self.create_menu_bar()
 
         self.geometry("1280x800")
         self.title("Cogniscope 4")
+
+    def show_frame(self, page_name):
+        frame = self.frames[page_name]
+        frame.tkraise()
 
     def create_menu_bar(self):
         menu_bar = Menu(self)
@@ -33,13 +65,13 @@ class Window(Tk):
         menu_bar.add_cascade(label="Edit", menu=menu_edit)
 
         menu_navigation = Menu(menu_bar, tearoff=0)
-        menu_navigation.add_command(label="Triggering Question", accelerator="⌘T")
-        menu_navigation.add_command(label="Generation", accelerator="⌘G")
-        menu_navigation.add_command(label="Clarification", accelerator="⌘L")
-        menu_navigation.add_command(label="First Voting", accelerator="⌘V")
-        menu_navigation.add_command(label="Clustering", accelerator="⇧⌘C")
-        menu_navigation.add_command(label="Second Voting", accelerator="⇧⌘N")
-        menu_navigation.add_command(label="Mapping", accelerator="⌘M")
+        menu_navigation.add_command(label="Triggering Question", accelerator="⌘T", command=lambda: self.show_frame("FrameTriggeringQuestion"))
+        menu_navigation.add_command(label="Generation", accelerator="⌘G", command=lambda: self.show_frame("FrameGeneration"))
+        menu_navigation.add_command(label="Clarification", accelerator="⌘L", command=lambda: self.show_frame("FrameClarification"))
+        menu_navigation.add_command(label="First Voting", accelerator="⌘V", command=lambda: self.show_frame("FrameFirstVoting"))
+        menu_navigation.add_command(label="Clustering", accelerator="⇧⌘C", command=lambda: self.show_frame("FrameClustering"))
+        menu_navigation.add_command(label="Second Voting", accelerator="⇧⌘N", command=lambda: self.show_frame("FrameSecondVoting"))
+        menu_navigation.add_command(label="Mapping", accelerator="⌘M", command=lambda: self.show_frame("FrameMapping"))
         menu_bar.add_cascade(label="Navigation", menu=menu_navigation)
 
         menu_reports = Menu(menu_bar, tearoff=0)
@@ -73,10 +105,13 @@ class Window(Tk):
         menu_help.add_command(label="Visit Dialog Design Wiki")
         menu_help.add_command(label="Frequently Asked Questions")
         menu_help.add_command(label="Download Manual")
-        menu_help.add_command(label="Version")
+        menu_help.add_command(label="Version", command=lambda: self.show_frame("FrameVersion"))
         menu_bar.add_cascade(label="Help", menu=menu_help)
 
         self.config(menu=menu_bar)
+
+    def quit(self):
+        exit(1)
 
     def open_file(self):
         print("TODO")
