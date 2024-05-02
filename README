@@ -1,0 +1,4 @@
+Install python packages before use :
+
+> beautifulsoup4
+> lxml

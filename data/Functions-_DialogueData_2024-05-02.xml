@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+  <projectData>
+    <PrjName>Functions of Concertina</PrjName>
+    <EventName>Learning Cogniscope</EventName>
+    <eventLoc>Zoom</eventLoc>
+    <eventDates>2024-04-26 03:46:56 - 2024-04-27 03:46:56</eventDates>
+    <sponsor/>
+    <ideaNameSingular>Characteristic</ideaNameSingular>
+    <ideaNamePlural>Characteristics</ideaNamePlural>
+    <sessType>A</sessType>
+  </projectData>
+  <trigQ>
+    <Name>What are the functions of concertina ?</Name>
+  </trigQ>
+  <genericQ>
+    <Name>["If we make progress in implementing Action:", "will this SIGNIFICANTLY help us in our efforts to implement:", "in the context of the Triggering Question"]</Name>
+  </genericQ>
+  <clusters>
+    <cluster>
+      <Num>1</Num>
+      <Name>Generation</Name>
+    </cluster>
+    <cluster>
+      <Num>2</Num>
+      <Name> Clarification</Name>
+    </cluster>
+    <cluster>
+      <Num>3</Num>
+      <Name> Voting</Name>
+    </cluster>
+  </clusters>
+  <ideas>
+    <idea>
+      <Num>1</Num>
+      <IdeaText>To keep the discussion on the triggering question which is about the functions of Concertina</IdeaText>
+      <classNo>[1]</classNo>
+      <votes>2</votes>
+      <stat>A</stat>
+      <clarification>Explain in details</clarification>
+    </idea>
+    <idea>
+      <Num>2</Num>
+      <IdeaText>To encourage participants to generate ideas of what concertina does</IdeaText>
+      <classNo>[1]</classNo>
+      <votes>0</votes>
+      <stat>A</stat>
+      <clarification>Explain in details</clarification>
+    </idea>
+    <idea>
+      <Num>3</Num>
+      <IdeaText>To explain in details each functions</IdeaText>
+      <classNo>[2]</classNo>
+      <votes>3</votes>
+      <stat>A</stat>
+      <clarification>Explain in details</clarification>
+    </idea>
+    <idea>
+      <Num>4</Num>
+      <IdeaText>To group together similar functions</IdeaText>
+      <classNo>[3]</classNo>
+      <votes>0</votes>
+      <stat>A</stat>
+      <clarification>Explain in details</clarification>
+    </idea>
+    <idea>
+      <Num>5</Num>
+      <IdeaText>To express preferences through voting</IdeaText>
+      <classNo>[3]</classNo>
+      <votes>3</votes>
+      <stat>A</stat>
+      <clarification>Explain in details</clarification>
+    </idea>
+    <idea>
+      <Num>6</Num>
+      <IdeaText>To find out which function support another function</IdeaText>
+      <classNo>[3]</classNo>
+      <votes>0</votes>
+      <stat>A</stat>
+      <clarification>Explain in details</clarification>
+    </idea>
+  </ideas>
+  <answerLog/>
+  <matrix/>
+  <ismState>
+    <ProducedBy>Concertina</ProducedBy>
+  </ismState>
+</data>

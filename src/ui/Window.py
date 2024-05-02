@@ -7,14 +7,17 @@ from src.ui.FrameGeneration import FrameGeneration
 from src.ui.FrameMapping import FrameMapping
 from src.ui.FrameSecondVoting import FrameSecondVoting
 from src.ui.FrameTriggeringQuestion import FrameTriggeringQuestion
+from tkinter.filedialog import askopenfilename
 
 import webbrowser
+from src.xml.XMLFileParser import XMLFileParser
 
 class Window(Tk):
 
     def __init__(self, configReader):
         Tk.__init__(self)
         self.configReader = configReader
+        self.xmlfileparser = XMLFileParser()
 
 
         container = Frame(self)
@@ -49,21 +52,21 @@ class Window(Tk):
         menu_bar = Menu(self)
 
         menu_file = Menu(menu_bar, tearoff=0)
-        menu_file.add_command(label=self.configReader.getTranslation("MN_New"), accelerator="Cmd+N", command=self.do_something)
+        menu_file.add_command(label=self.configReader.getTranslation("MN_New"), accelerator="Cmd+N")
         menu_file.add_command(label=self.configReader.getTranslation("MN_Open"), accelerator="Cmd+O", command=self.open_file)
-        menu_file.add_command(label=self.configReader.getTranslation("MN_Save"), accelerator="Cmd+S", command=self.do_something)
-        menu_file.add_command(label=self.configReader.getTranslation("MN_SaveAs"), accelerator="Shift+Cmd+S", command=self.do_something)
+        menu_file.add_command(label=self.configReader.getTranslation("MN_Save"), accelerator="Cmd+S")
+        menu_file.add_command(label=self.configReader.getTranslation("MN_SaveAs"), accelerator="Shift+Cmd+S")
         menu_file.add_separator()
         menu_file.add_command(label=self.configReader.getTranslation("MN_Exit"), accelerator="Cmd+X", command=self.quit)
 
         menu_bar.add_cascade(label=self.configReader.getTranslation("MN_File"), menu=menu_file)
 
         menu_edit = Menu(menu_bar, tearoff=0)
-        menu_edit.add_command(label="Project", command=self.do_something)
+        menu_edit.add_command(label="Project")
         menu_edit.add_separator()
-        menu_edit.add_command(label="Dialogue", command=self.do_something)
-        menu_edit.add_command(label="Cluster Questions", command=self.do_something)
-        menu_edit.add_command(label="Mapping Questions", command=self.do_something)
+        menu_edit.add_command(label="Dialogue")
+        menu_edit.add_command(label="Cluster Questions")
+        menu_edit.add_command(label="Mapping Questions")
         menu_bar.add_cascade(label=self.configReader.getTranslation("MN_Edit"), menu=menu_edit)
 
         menu_navigation = Menu(menu_bar, tearoff=0)
@@ -116,12 +119,8 @@ class Window(Tk):
         exit(1)
 
     def open_file(self):
-        print("TODO")
-
-    def do_something(self):
-        print("TODO")
-
-    def do_about(self):
-        print("TODO")
+        fn = askopenfilename()
+        print(fn)
+        self.xmlfileparser.openFile(fn)
 
 
