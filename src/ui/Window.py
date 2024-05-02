@@ -8,6 +8,8 @@ from src.ui.FrameMapping import FrameMapping
 from src.ui.FrameSecondVoting import FrameSecondVoting
 from src.ui.FrameTriggeringQuestion import FrameTriggeringQuestion
 
+import webbrowser
+
 class Window(Tk):
 
     def __init__(self, configReader):
@@ -102,9 +104,9 @@ class Window(Tk):
         menu_bar.add_cascade(label=self.configReader.getTranslation("MN_Utilities"), menu=menu_utilities)
 
         menu_help = Menu(menu_bar, tearoff=0)
-        menu_help.add_command(label="Visit Dialog Design Wiki")
-        menu_help.add_command(label="Frequently Asked Questions")
-        menu_help.add_command(label="Download Manual")
+        menu_help.add_command(label="Visit Dialog Design Wiki", command=lambda: webbrowser.open("https://www.dialogicdesignscience.info/", new=0, autoraise=True))
+        menu_help.add_command(label="Frequently Asked Questions", command=lambda: webbrowser.open("https://www.ekkotek.com/index.php/products/wisdom-tools/Cogniscope3", new=0, autoraise=True))
+        menu_help.add_command(label="Download Manual", command=lambda: webbrowser.open("https://www.ekkotek.com/index.php/products/wisdom-tools/Cogniscope3", new=0, autoraise=True))
         menu_help.add_command(label="Version", command=lambda: self.show_frame("FrameVersion"))
         menu_bar.add_cascade(label=self.configReader.getTranslation("MN_Help"), menu=menu_help)
 
