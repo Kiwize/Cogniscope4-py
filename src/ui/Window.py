@@ -47,12 +47,12 @@ class Window(Tk):
         menu_bar = Menu(self)
 
         menu_file = Menu(menu_bar, tearoff=0)
-        menu_file.add_command(label="New", accelerator="⌘N", command=self.do_something)
-        menu_file.add_command(label="Open", accelerator="⌘O", command=self.open_file)
-        menu_file.add_command(label="Save", accelerator="⌘S", command=self.do_something)
-        menu_file.add_command(label="Save as", accelerator="⇧⌘S", command=self.do_something)
+        menu_file.add_command(label="New", accelerator="Cmd+N", command=self.do_something)
+        menu_file.add_command(label="Open", accelerator="Cmd+O", command=self.open_file)
+        menu_file.add_command(label="Save", accelerator="Cmd+S", command=self.do_something)
+        menu_file.add_command(label="Save as", accelerator="Shift+Cmd+S", command=self.do_something)
         menu_file.add_separator()
-        menu_file.add_command(label="Exit", accelerator="⌘X", command=self.quit)
+        menu_file.add_command(label="Exit", accelerator="Cmd+X", command=self.quit)
 
         menu_bar.add_cascade(label=self.configReader.getTranslation("MN_File"), menu=menu_file)
 
@@ -65,13 +65,13 @@ class Window(Tk):
         menu_bar.add_cascade(label="Edit", menu=menu_edit)
 
         menu_navigation = Menu(menu_bar, tearoff=0)
-        menu_navigation.add_command(label="Triggering Question", accelerator="⌘T", command=lambda: self.show_frame("FrameTriggeringQuestion"))
-        menu_navigation.add_command(label="Generation", accelerator="⌘G", command=lambda: self.show_frame("FrameGeneration"))
-        menu_navigation.add_command(label="Clarification", accelerator="⌘L", command=lambda: self.show_frame("FrameClarification"))
-        menu_navigation.add_command(label="First Voting", accelerator="⌘V", command=lambda: self.show_frame("FrameFirstVoting"))
-        menu_navigation.add_command(label="Clustering", accelerator="⇧⌘C", command=lambda: self.show_frame("FrameClustering"))
-        menu_navigation.add_command(label="Second Voting", accelerator="⇧⌘N", command=lambda: self.show_frame("FrameSecondVoting"))
-        menu_navigation.add_command(label="Mapping", accelerator="⌘M", command=lambda: self.show_frame("FrameMapping"))
+        menu_navigation.add_command(label="Triggering Question", accelerator="Cmd+T", command=lambda: self.show_frame("FrameTriggeringQuestion"))
+        menu_navigation.add_command(label="Generation", accelerator="Cmd+G", command=lambda: self.show_frame("FrameGeneration"))
+        menu_navigation.add_command(label="Clarification", accelerator="Cmd+L", command=lambda: self.show_frame("FrameClarification"))
+        menu_navigation.add_command(label="First Voting", accelerator="Cmd+V", command=lambda: self.show_frame("FrameFirstVoting"))
+        menu_navigation.add_command(label="Clustering", accelerator="Shift+Cmd+C", command=lambda: self.show_frame("FrameClustering"))
+        menu_navigation.add_command(label="Second Voting", accelerator="Shift+Cmd+N", command=lambda: self.show_frame("FrameSecondVoting"))
+        menu_navigation.add_command(label="Mapping", accelerator="Cmd+M", command=lambda: self.show_frame("FrameMapping"))
         menu_bar.add_cascade(label="Navigation", menu=menu_navigation)
 
         menu_reports = Menu(menu_bar, tearoff=0)
