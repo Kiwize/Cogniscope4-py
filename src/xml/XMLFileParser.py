@@ -24,6 +24,8 @@ class XMLFileParser :
 
             self.project = Project(projectData, triggeringQuestion, genericQuestion, clusters, ideas)
             
+    def getProject(self):
+        return self.project
             
 
 

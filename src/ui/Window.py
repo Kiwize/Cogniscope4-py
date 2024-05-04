@@ -120,7 +120,6 @@ class Window(Tk):
 
     def open_file(self):
         fn = askopenfilename()
-        print(fn)
         self.xmlfileparser.openFile(fn)
 
 
