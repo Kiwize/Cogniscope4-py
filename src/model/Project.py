@@ -48,6 +48,12 @@ class Project :
     def getSessType(self):
         return self.sessType
     
+    def getTriggeringQuestion(self):
+        return self.triggerQuestion
+    
+    def getGenericQuestion(self):
+        return self.genericQuestion
+    
     def getClusters(self):
         return self.clusters
     
