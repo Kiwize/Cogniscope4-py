@@ -7,6 +7,7 @@ from src.ui.FrameGeneration import FrameGeneration
 from src.ui.FrameMapping import FrameMapping
 from src.ui.FrameSecondVoting import FrameSecondVoting
 from src.ui.FrameTriggeringQuestion import FrameTriggeringQuestion
+from src.ui.FrameUserPreferences import FrameUserPreferences
 from tkinter.filedialog import askopenfilename
 from datetime import date, datetime
 
@@ -28,7 +29,7 @@ class Window(Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (FrameVersion, FrameClarification, FrameClustering, FrameFirstVoting, FrameGeneration, FrameMapping, FrameSecondVoting, FrameTriggeringQuestion) :
+        for F in (FrameVersion, FrameClarification, FrameClustering, FrameFirstVoting, FrameGeneration, FrameMapping, FrameSecondVoting, FrameTriggeringQuestion, FrameUserPreferences) :
             page_name = F.__name__
             frame = F(parent=container)
             self.frames[page_name] = frame
@@ -69,6 +70,8 @@ class Window(Tk):
         menu_edit.add_command(label="Dialogue")
         menu_edit.add_command(label="Cluster Questions")
         menu_edit.add_command(label="Mapping Questions")
+        menu_edit.add_separator()
+        menu_edit.add_command(label="Preferences", command=lambda: self.show_frame("FrameUserPreferences"))
         menu_bar.add_cascade(label=self.configReader.getTranslation("MN_Edit"), menu=menu_edit)
 
         menu_navigation = Menu(menu_bar, tearoff=0)
