@@ -33,6 +33,10 @@ class Window(Tk):
             page_name = F.__name__
             frame = F(parent=container)
             self.frames[page_name] = frame
+            
+            if page_name == "FrameUserPreferences":
+                print("Config frame " + page_name)
+                frame.setUserPreference(self.configReader)
 
             # put all of the pages in the same location;
             # the one on the top of the stacking order
