@@ -9,9 +9,9 @@ class ConfigReader:
         self.configFileName = fileName
         print("Reading config " + fileName)
 
-        config = open("./data/" + fileName + ".txt", mode='r+', encoding='utf8')
+        self.config = open("./data/" + fileName + ".txt", mode='r+', encoding='utf8')
 
-        for line in config :
+        for line in self.config :
             line = line.replace("\n", "")
             splittedLine = line.split("=")
 
@@ -38,8 +38,17 @@ class ConfigReader:
 
     
     #Update file's content with the new values
-    def updatePreferencesFile(self) :
-        print("TODO")
+    def updatePreferencesFile(self, param, newval) :
+        with open("./data/" + self.configFileName + ".txt", mode='r', encoding='utf8') as file:
+            lines = file.readlines()
+
+        for i, line in enumerate(lines):
+            if line.startswith(param + '='):
+                lines[i] = param + '=' + newval + '\n'
+                break
+
+        with open("./data/" + self.configFileName + ".txt", mode='w', encoding='utf8') as file:
+            file.writelines(lines)
 
 
         
