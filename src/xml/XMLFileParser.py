@@ -1,5 +1,6 @@
 #This file opens XMLs files from Concertina and Cognisope 3 to import them in Cogniscope 4
 from bs4 import BeautifulSoup
+from src.model.Project import Project
 
 class XMLFileParser :
 
@@ -13,10 +14,14 @@ class XMLFileParser :
             data = f.read()
 
             Bs_data = BeautifulSoup(data, "xml")
- 
-            b_unique = Bs_data.find_all('projectData')
+
+            projectData = Bs_data.findChild('projectData')
+            triggeringQuestion = Bs_data.find('trigQ')
+            genericQuestion = Bs_data.find('genericQ')
+
+            self.project = Project(projectData, triggeringQuestion, genericQuestion)
             
-            print(b_unique)
+            
 
 
 
