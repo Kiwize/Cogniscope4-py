@@ -4,8 +4,8 @@ from src.model.Project import Project
 
 class XMLFileParser :
 
-    def __init__(self) -> None:
-        pass
+    def __init__(self):
+        self.project = None
 
     def openFile(self, filePath):
         self.currentFile = filePath

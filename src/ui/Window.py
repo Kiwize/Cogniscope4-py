@@ -8,6 +8,7 @@ from src.ui.FrameMapping import FrameMapping
 from src.ui.FrameSecondVoting import FrameSecondVoting
 from src.ui.FrameTriggeringQuestion import FrameTriggeringQuestion
 from src.ui.FrameUserPreferences import FrameUserPreferences
+from src.ui.FrameAdmin import FrameAdmin
 from tkinter.filedialog import askopenfilename
 from datetime import date, datetime
 
@@ -30,14 +31,15 @@ class Window(Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (FrameVersion, FrameClarification, FrameClustering, FrameFirstVoting, FrameGeneration, FrameMapping, FrameSecondVoting, FrameTriggeringQuestion, FrameUserPreferences) :
+        for F in (FrameVersion, FrameClarification, FrameClustering, FrameFirstVoting, FrameGeneration, FrameMapping, FrameSecondVoting, FrameTriggeringQuestion, FrameUserPreferences, FrameAdmin) :
             page_name = F.__name__
             frame = F(parent=container)
             self.frames[page_name] = frame
             
             if page_name == "FrameUserPreferences":
-                print("Config frame " + page_name)
                 frame.setUserPreference(self.configReader)
+            elif page_name == "FrameAdmin":
+                frame.setXMLFileParser(self.xmlfileparser)
 
             # put all of the pages in the same location;
             # the one on the top of the stacking order
@@ -77,6 +79,7 @@ class Window(Tk):
         menu_edit.add_command(label="Mapping Questions")
         menu_edit.add_separator()
         menu_edit.add_command(label="Preferences", command=lambda: self.show_frame("FrameUserPreferences"))
+        menu_edit.add_command(label="Dialogue Admin", command=lambda: self.show_frame("FrameAdmin"))
         self.menu_bar.add_cascade(menu=menu_edit)
 
         self.menu_navigation = Menu(self.menu_bar, tearoff=0)
@@ -161,6 +164,9 @@ class Window(Tk):
         fn = askopenfilename()
         self.xmlfileparser.openFile(fn)
         self.openedProject = self.xmlfileparser.getProject()
+        
+        adminFrame = self.frames["FrameAdmin"]
+        adminFrame.updateData()
         
     def exportListOfIdeas(self):
         if self.openedProject == None:
