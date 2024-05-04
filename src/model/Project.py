@@ -1,8 +1,9 @@
-
+from src.model.Cluster import Cluster
+from src.model.Idea import Idea
 
 
 class Project :
-    def __init__(self, projectData, triggerQuestion, genericQuestion):
+    def __init__(self, projectData, triggerQuestion, genericQuestion, clustersTags, ideasTags):
         self.name = projectData.findChild('PrjName').getText()
         self.eventName = projectData.findChild('EventName').getText()
         self.eventLoc = projectData.findChild('eventLoc').getText()
@@ -15,7 +16,16 @@ class Project :
         self.genericQuestion = genericQuestion.findChild('Name').getText()
         
         self.clusters = []
+        
+        for clusterTag in clustersTags:
+            cluster = Cluster(clusterTag.find('Num').getText(), clusterTag.find('Name').getText())
+            self.clusters.append(cluster)
+          
         self.ideas = []
+        
+        for ideaTag in ideasTags:
+            idea = Idea(ideaTag.find('Num').getText(), ideaTag.find('IdeaText').getText(), ideaTag.find('classNo').getText(), ideaTag.find('votes').getText(), ideaTag.find('stat').getText(), ideaTag.find('clarification').getText())
+            self.ideas.append(idea)
 
     def getName(self):
         return self.name
@@ -37,3 +47,9 @@ class Project :
     
     def getSessType(self):
         return self.sessType
+    
+    def getClusters(self):
+        return self.clusters
+    
+    def getIdeas(self):
+        return self.ideas

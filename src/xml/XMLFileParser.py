@@ -19,7 +19,10 @@ class XMLFileParser :
             triggeringQuestion = Bs_data.find('trigQ')
             genericQuestion = Bs_data.find('genericQ')
 
-            self.project = Project(projectData, triggeringQuestion, genericQuestion)
+            clusters = Bs_data.findAll('cluster')
+            ideas = Bs_data.findAll('idea')
+
+            self.project = Project(projectData, triggeringQuestion, genericQuestion, clusters, ideas)
             
             
 
