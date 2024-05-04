@@ -7,7 +7,7 @@ class FrameUserPreferences(Frame):
         Frame.__init__(self, parent)
 
         frameTitle = Label(self, text="Preferences")
-        frameTitle.pack(side="top", fill="x", pady="5")
+        frameTitle.grid(sticky="ew")
         
         self.userLangageSelected = StringVar() 
         self.availableLangages = [
@@ -19,7 +19,8 @@ class FrameUserPreferences(Frame):
         self.userLangageSelected.set(self.availableLangages[0])
         
         userLangage = OptionMenu(self, self.userLangageSelected, *self.availableLangages, command=lambda e: self.updateConfig("PR_defaultLanguage", self.userLangageSelected))
-        userLangage.pack(side="top", fill="x", pady="5")
+        userLangage.grid(sticky="ew")
+
         self.userLangageLabel = userLangage
         
     def setUserPreference(self, preferences):
