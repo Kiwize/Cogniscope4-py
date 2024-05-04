@@ -1,4 +1,4 @@
-from tkinter import Tk, Menu, Frame
+from tkinter import Tk, Menu, Frame, StringVar
 from src.ui.FrameVersion import FrameVersion
 from src.ui.FrameClarification import FrameClarification
 from src.ui.FrameClustering import FrameClustering
@@ -20,6 +20,7 @@ class Window(Tk):
         Tk.__init__(self)
         self.openedProject = None
         self.configReader = configReader
+        self.configReader.setWindow(self)
         self.xmlfileparser = XMLFileParser()
 
 
@@ -56,19 +57,19 @@ class Window(Tk):
         frame.tkraise()
 
     def create_menu_bar(self):
-        menu_bar = Menu(self)
+        self.menu_bar = Menu(self)
 
-        menu_file = Menu(menu_bar, tearoff=0)
-        menu_file.add_command(label=self.configReader.getTranslation("MN_New"), accelerator="Cmd+N")
-        menu_file.add_command(label=self.configReader.getTranslation("MN_Open"), accelerator="Cmd+O", command=self.open_file)
-        menu_file.add_command(label=self.configReader.getTranslation("MN_Save"), accelerator="Cmd+S")
-        menu_file.add_command(label=self.configReader.getTranslation("MN_SaveAs"), accelerator="Shift+Cmd+S")
-        menu_file.add_separator()
-        menu_file.add_command(label=self.configReader.getTranslation("MN_Exit"), accelerator="Cmd+X", command=self.quit)
+        self.menu_file = Menu(self.menu_bar, tearoff=0)
+        self.menu_file.add_command(accelerator="Cmd+N")
+        self.menu_file.add_command(accelerator="Cmd+O", command=self.open_file)
+        self.menu_file.add_command(accelerator="Cmd+S")
+        self.menu_file.add_command(accelerator="Shift+Cmd+S")
+        self.menu_file.add_separator()
+        self.menu_file.add_command(accelerator="Cmd+X", command=self.quit)
 
-        menu_bar.add_cascade(label=self.configReader.getTranslation("MN_File"), menu=menu_file)
+        self.menu_bar.add_cascade(menu=self.menu_file)
 
-        menu_edit = Menu(menu_bar, tearoff=0)
+        menu_edit = Menu(self.menu_bar, tearoff=0)
         menu_edit.add_command(label="Project")
         menu_edit.add_separator()
         menu_edit.add_command(label="Dialogue")
@@ -76,53 +77,82 @@ class Window(Tk):
         menu_edit.add_command(label="Mapping Questions")
         menu_edit.add_separator()
         menu_edit.add_command(label="Preferences", command=lambda: self.show_frame("FrameUserPreferences"))
-        menu_bar.add_cascade(label=self.configReader.getTranslation("MN_Edit"), menu=menu_edit)
+        self.menu_bar.add_cascade(menu=menu_edit)
 
-        menu_navigation = Menu(menu_bar, tearoff=0)
-        menu_navigation.add_command(label=self.configReader.getTranslation("MN_TriggeringQuestion"), accelerator="Cmd+T", command=lambda: self.show_frame("FrameTriggeringQuestion"))
-        menu_navigation.add_command(label=self.configReader.getTranslation("MN_Generation"), accelerator="Cmd+G", command=lambda: self.show_frame("FrameGeneration"))
-        menu_navigation.add_command(label=self.configReader.getTranslation("MN_Clarification"), accelerator="Cmd+L", command=lambda: self.show_frame("FrameClarification"))
-        menu_navigation.add_command(label=self.configReader.getTranslation("MN_FirstVoting"), accelerator="Cmd+V", command=lambda: self.show_frame("FrameFirstVoting"))
-        menu_navigation.add_command(label=self.configReader.getTranslation("MN_Clustering"), accelerator="Shift+Cmd+C", command=lambda: self.show_frame("FrameClustering"))
-        menu_navigation.add_command(label=self.configReader.getTranslation("MN_SecondVoting"), accelerator="Shift+Cmd+N", command=lambda: self.show_frame("FrameSecondVoting"))
-        menu_navigation.add_command(label=self.configReader.getTranslation("MN_Mapping"), accelerator="Cmd+M", command=lambda: self.show_frame("FrameMapping"))
-        menu_bar.add_cascade(label=self.configReader.getTranslation("MN_Navigation"), menu=menu_navigation)
+        self.menu_navigation = Menu(self.menu_bar, tearoff=0)
+        self.menu_navigation.add_command(accelerator="Cmd+T", command=lambda: self.show_frame("FrameTriggeringQuestion"))
+        self.menu_navigation.add_command(accelerator="Cmd+G", command=lambda: self.show_frame("FrameGeneration"))
+        self.menu_navigation.add_command(accelerator="Cmd+L", command=lambda: self.show_frame("FrameClarification"))
+        self.menu_navigation.add_command(accelerator="Cmd+V", command=lambda: self.show_frame("FrameFirstVoting"))
+        self.menu_navigation.add_command(accelerator="Shift+Cmd+C", command=lambda: self.show_frame("FrameClustering"))
+        self.menu_navigation.add_command(accelerator="Shift+Cmd+N", command=lambda: self.show_frame("FrameSecondVoting"))
+        self.menu_navigation.add_command(accelerator="Cmd+M", command=lambda: self.show_frame("FrameMapping"))
+        self.menu_bar.add_cascade(menu=self.menu_navigation)
 
-        menu_reports = Menu(menu_bar, tearoff=0)
-        menu_reports.add_command(label="List of Ideas")
-        menu_reports.add_command(label="Clarification")
-        menu_reports.add_command(label="Clusters Table")
-        menu_reports.add_command(label="First Voting")
-        menu_reports.add_command(label="Second Voting")
-        menu_reports.add_command(label="Voting Analysis")
-        menu_reports.add_command(label="Map")
-        menu_reports.add_command(label="Map Analysis")
-        menu_bar.add_cascade(label=self.configReader.getTranslation("MN_Reports"), menu=menu_reports)
+        self.menu_reports = Menu(self.menu_bar, tearoff=0)
+        self.menu_reports.add_command(label="List of Ideas")
+        self.menu_reports.add_command(label="Clarification")
+        self.menu_reports.add_command(label="Clusters Table")
+        self.menu_reports.add_command(label="First Voting")
+        self.menu_reports.add_command(label="Second Voting")
+        self.menu_reports.add_command(label="Voting Analysis")
+        self.menu_reports.add_command(label="Map")
+        self.menu_reports.add_command(label="Map Analysis")
+        self.menu_bar.add_cascade(menu=self.menu_reports)
 
-        menu_export = Menu(menu_bar, tearoff=0)
-        menu_export.add_command(label="List of Ideas", command=lambda: self.exportListOfIdeas())
-        menu_export.add_command(label="Clarifications")
-        menu_export.add_command(label="Clusters Table")
-        menu_export.add_command(label="First Voting")
-        menu_export.add_command(label="Second Voting")
-        menu_export.add_command(label="Map Data")
-        menu_export.add_command(label="Matrix")
-        menu_bar.add_cascade(label=self.configReader.getTranslation("MN_Export"), menu=menu_export)
+        self.menu_export = Menu(self.menu_bar, tearoff=0)
+        self.menu_export.add_command(label="List of Ideas", command=lambda: self.exportListOfIdeas())
+        self.menu_export.add_command(label="Clarifications")
+        self.menu_export.add_command(label="Clusters Table")
+        self.menu_export.add_command(label="First Voting")
+        self.menu_export.add_command(label="Second Voting")
+        self.menu_export.add_command(label="Map Data")
+        self.menu_export.add_command(label="Matrix")
+        self.menu_bar.add_cascade(menu=self.menu_export)
 
-        menu_utilities = Menu(menu_bar, tearoff=0)
-        menu_utilities.add_command(label="Print ideas")
-        menu_utilities.add_command(label="Print Headings")
-        menu_utilities.add_command(label="Print Timestamps")
-        menu_bar.add_cascade(label=self.configReader.getTranslation("MN_Utilities"), menu=menu_utilities)
+        self.menu_utilities = Menu(self.menu_bar, tearoff=0)
+        self.menu_utilities.add_command(label="Print ideas")
+        self.menu_utilities.add_command(label="Print Headings")
+        self.menu_utilities.add_command(label="Print Timestamps")
+        self.menu_bar.add_cascade(menu=self.menu_utilities)
 
-        menu_help = Menu(menu_bar, tearoff=0)
-        menu_help.add_command(label="Visit Dialog Design Wiki", command=lambda: webbrowser.open("https://www.dialogicdesignscience.info/", new=0, autoraise=True))
-        menu_help.add_command(label="Frequently Asked Questions", command=lambda: webbrowser.open("https://www.ekkotek.com/index.php/products/wisdom-tools/Cogniscope3", new=0, autoraise=True))
-        menu_help.add_command(label="Download Manual", command=lambda: webbrowser.open("https://www.ekkotek.com/index.php/products/wisdom-tools/Cogniscope3", new=0, autoraise=True))
-        menu_help.add_command(label="Version", command=lambda: self.show_frame("FrameVersion"))
-        menu_bar.add_cascade(label=self.configReader.getTranslation("MN_Help"), menu=menu_help)
+        self.menu_help = Menu(self.menu_bar, tearoff=0)
+        self.menu_help.add_command(label="Visit Dialog Design Wiki", command=lambda: webbrowser.open("https://www.dialogicdesignscience.info/", new=0, autoraise=True))
+        self.menu_help.add_command(label="Frequently Asked Questions", command=lambda: webbrowser.open("https://www.ekkotek.com/index.php/products/wisdom-tools/Cogniscope3", new=0, autoraise=True))
+        self.menu_help.add_command(label="Download Manual", command=lambda: webbrowser.open("https://www.ekkotek.com/index.php/products/wisdom-tools/Cogniscope3", new=0, autoraise=True))
+        self.menu_help.add_command(label="Version", command=lambda: self.show_frame("FrameVersion"))
+        self.menu_bar.add_cascade(menu=self.menu_help)
 
-        self.config(menu=menu_bar)
+        self.config(menu=self.menu_bar)
+        
+        self.updateTranslations()
+        
+    def updateTranslations(self):
+        self.menu_bar.entryconfigure(0, label=self.configReader.getTranslation("MN_File"))
+        
+        self.menu_file.entryconfigure(0, label=self.configReader.getTranslation("MN_New"))
+        self.menu_file.entryconfigure(1, label=self.configReader.getTranslation("MN_Open"))
+        self.menu_file.entryconfigure(2, label=self.configReader.getTranslation("MN_Save"))
+        self.menu_file.entryconfigure(3, label=self.configReader.getTranslation("MN_SaveAs"))
+        self.menu_file.entryconfigure(5, label=self.configReader.getTranslation("MN_Exit"))
+        
+        self.menu_bar.entryconfigure(1, label=self.configReader.getTranslation("MN_Edit"))
+        
+        self.menu_bar.entryconfigure(2, label=self.configReader.getTranslation("MN_Navigation"))
+        
+        self.menu_navigation.entryconfigure(0, label=self.configReader.getTranslation("MN_TriggeringQuestion"))
+        self.menu_navigation.entryconfigure(1, label=self.configReader.getTranslation("MN_Generation"))
+        self.menu_navigation.entryconfigure(2, label=self.configReader.getTranslation("MN_Clarification"))
+        self.menu_navigation.entryconfigure(3, label=self.configReader.getTranslation("MN_FirstVoting"))
+        self.menu_navigation.entryconfigure(4, label=self.configReader.getTranslation("MN_Clustering"))
+        self.menu_navigation.entryconfigure(5, label=self.configReader.getTranslation("MN_SecondVoting"))
+        self.menu_navigation.entryconfigure(6, label=self.configReader.getTranslation("MN_Mapping"))
+        
+        self.menu_bar.entryconfigure(3, label=self.configReader.getTranslation("MN_Reports"))
+        
+        self.menu_bar.entryconfigure(4, label=self.configReader.getTranslation("MN_Export"))
+        
+        self.menu_bar.entryconfigure(5, label=self.configReader.getTranslation("MN_Help"))
 
     def quit(self):
         exit(1)

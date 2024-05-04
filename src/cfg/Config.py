@@ -3,6 +3,7 @@ class ConfigReader:
 
     def __init__(self) -> None:
         self.userPreferences = {} #Dictionnary that contains all parameters
+        self.window = None
 
     #Read a config file and put the values in dictionnaries
     def readConfig(self, fileName):
@@ -49,6 +50,16 @@ class ConfigReader:
 
         with open("./data/" + self.configFileName + ".txt", mode='w', encoding='utf8') as file:
             file.writelines(lines)
+            
+        self.userPreferences.clear()    
+        self.readConfig(self.configFileName)
+            
+        if param == "PR_defaultLanguage" :
+            self.window.updateTranslations()
+            
+            
+    def setWindow(self, window):
+        self.window = window
 
 
         
