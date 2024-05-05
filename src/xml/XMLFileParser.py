@@ -6,6 +6,7 @@ class XMLFileParser :
 
     def __init__(self):
         self.project = None
+        self.projectDataDict = {}
 
     def openFile(self, filePath):
         self.currentFile = filePath
@@ -24,8 +25,15 @@ class XMLFileParser :
 
             self.project = Project(projectData, triggeringQuestion, genericQuestion, clusters, ideas)
             
-    def getProject(self):
+            
+
+            
+    def getProject(self) -> Project:
         return self.project
+    
+    
+    def getProjectDataDict(self) :
+        return self.projectDataDict
             
         
 

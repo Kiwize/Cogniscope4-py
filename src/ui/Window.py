@@ -168,6 +168,9 @@ class Window(Tk):
         adminFrame = self.frames["FrameAdmin"]
         adminFrame.updateData()
         
+        for cle, valeur in self.xmlfileparser.getProjectDataDict().items():
+            print(f"Clé: {cle}, Valeur: {valeur}")
+        
     def exportListOfIdeas(self):
         if self.openedProject == None:
             print('ERR: Must open project first !')
