@@ -1,4 +1,5 @@
 from tkinter import Tk, Menu, Frame, StringVar
+from src.cfg.Config import ConfigReader
 from src.ui.FrameVersion import FrameVersion
 from src.ui.FrameClarification import FrameClarification
 from src.ui.FrameClustering import FrameClustering
@@ -17,7 +18,7 @@ from src.xml.XMLFileParser import XMLFileParser
 
 class Window(Tk):
 
-    def __init__(self, configReader):
+    def __init__(self, configReader: ConfigReader):
         Tk.__init__(self)
         self.openedProject = None
         self.configReader = configReader
@@ -93,7 +94,7 @@ class Window(Tk):
         self.menu_bar.add_cascade(menu=self.menu_navigation)
 
         self.menu_reports = Menu(self.menu_bar, tearoff=0)
-        self.menu_reports.add_command(label="List of Ideas")
+        self.menu_reports.add_command()
         self.menu_reports.add_command(label="Clarification")
         self.menu_reports.add_command(label="Clusters Table")
         self.menu_reports.add_command(label="First Voting")
@@ -152,10 +153,37 @@ class Window(Tk):
         self.menu_navigation.entryconfigure(6, label=self.configReader.getTranslation("MN_Mapping"))
         
         self.menu_bar.entryconfigure(3, label=self.configReader.getTranslation("MN_Reports"))
+        self.menu_reports.entryconfigure(0, label=self.configReader.getTranslation("MN_ListOfIdeas"))
+        self.menu_reports.entryconfigure(1, label=self.configReader.getTranslation("MN_Clarifications"))
+        self.menu_reports.entryconfigure(2, label=self.configReader.getTranslation("MN_ClustersTable"))
+        self.menu_reports.entryconfigure(3, label=self.configReader.getTranslation("MN_FirstVoting"))
+        self.menu_reports.entryconfigure(4, label=self.configReader.getTranslation("MN_SecondVoting"))
+        self.menu_reports.entryconfigure(5, label=self.configReader.getTranslation("MN_VotingAnalysis"))
+        self.menu_reports.entryconfigure(6, label=self.configReader.getTranslation("MN_Map"))
+        self.menu_reports.entryconfigure(7, label=self.configReader.getTranslation("MN_MapAnalysis"))
         
         self.menu_bar.entryconfigure(4, label=self.configReader.getTranslation("MN_Export"))
         
-        self.menu_bar.entryconfigure(5, label=self.configReader.getTranslation("MN_Help"))
+        self.menu_export.entryconfigure(0, label=self.configReader.getTranslation("MN_ListOfIdeas"))
+        self.menu_export.entryconfigure(1, label=self.configReader.getTranslation("MN_Clarifications"))
+        self.menu_export.entryconfigure(2, label=self.configReader.getTranslation("MN_ClustersTable"))
+        self.menu_export.entryconfigure(3, label=self.configReader.getTranslation("MN_FirstVoting"))
+        self.menu_export.entryconfigure(4, label=self.configReader.getTranslation("MN_SecondVoting"))
+        self.menu_export.entryconfigure(5, label=self.configReader.getTranslation("MN_MapData"))
+        self.menu_export.entryconfigure(6, label=self.configReader.getTranslation("MN_Matrix"))
+        
+        self.menu_bar.entryconfigure(5, label=self.configReader.getTranslation("MN_Utilities"))
+        
+        self.menu_utilities.entryconfigure(0, label=self.configReader.getTranslation("MN_PrintIdeas"))
+        self.menu_utilities.entryconfigure(1, label=self.configReader.getTranslation("MN_PrintHeadings"))
+        self.menu_utilities.entryconfigure(2, label=self.configReader.getTranslation("MN_ExportTimestamps"))
+        
+        self.menu_bar.entryconfigure(6, label=self.configReader.getTranslation("MN_Help"))
+        
+        self.menu_help.entryconfigure(0, label=self.configReader.getTranslation("MN_Wiki"))
+        self.menu_help.entryconfigure(1, label=self.configReader.getTranslation("MN_FAQ"))
+        self.menu_help.entryconfigure(2, label=self.configReader.getTranslation("MN_Manual"))
+        self.menu_help.entryconfigure(3, label=self.configReader.getTranslation("MN_Version"))
 
     def quit(self):
         exit(1)
