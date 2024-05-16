@@ -2,3 +2,6 @@ Install python packages before use :
 
 > beautifulsoup4
 > lxml
+> customtkinter
+
+Use pip install command to install those dependencies
