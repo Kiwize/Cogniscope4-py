@@ -30,50 +30,18 @@ class FrameAdmin(Frame):
             
             print("Displaying file content into admin page...")
             i = 0
-            self.iterate_values(project.getProjectTagsDataDict(), i)    
+
+            #self.iterate_values(project.getProjectTagsDataDict(), i)    
+            for key, val in project.getProjectTagsDataDict().items():
+                print("Key : " + str(key) + "     Val : " + str(val))
+                i = i + 1
+                if i % 2 == 0:
+                    Label(self.scrollable_frame, text=key, anchor="w", justify="left", bg="#575757").grid(column=0, row=i, sticky="nswe")
+                    Label(self.scrollable_frame, text=val, anchor="w", justify="left", bg="#575757").grid(column=1, row=i, sticky="nswe")
+                else :
+                    Label(self.scrollable_frame, text=key, anchor="w", justify="left").grid(column=0, row=i, sticky="nswe")
+                    Label(self.scrollable_frame, text=val, anchor="w", justify="left").grid(column=1, row=i, sticky="nswe")
                 
-                
-            
         else :
             self.projectData = Label(self, text="No project opened...")
 
-    def iterate_values(self, d, parent_key='', i=0): 
-            
-        if isinstance(d, dict):
-            for key, value in d.items():
-                current_key = f"{parent_key}.{key}" if parent_key else key
-                
-                if not "[" in value:
-                    
-                    if isinstance(value, list):
-                        print('HERE ===========> ' + str(type(value)) + "     " + str(value))
-                        self.iterate_values(value, current_key, i)
-                    
-                    i = i + 1
-                    if i % 2 == 0:
-                        Label(self.scrollable_frame, text=current_key, anchor="w", justify="left", bg="#575757").grid(column=0, row=i, sticky="nswe")
-                        Label(self.scrollable_frame, text=value, anchor="w", justify="left", bg="#575757").grid(column=1, row=i, sticky="nswe")
-                    else :
-                        Label(self.scrollable_frame, text=current_key, anchor="w", justify="left").grid(column=0, row=i, sticky="nswe")
-                        Label(self.scrollable_frame, text=value, anchor="w", justify="left").grid(column=1, row=i, sticky="nswe")
-                        
-                self.iterate_values(value, current_key, i)
-                    
-        elif isinstance(d, list):
-            for a, item in enumerate(d):
-                current_key = f"{parent_key}[{a}]"
-                if not "[" in item:
-                    if isinstance(item, dict):
-                        print('HERE ===========> ' + str(type(item)) + "     " + str(item))
-                        self.iterate_values(item, current_key, i)
-
-                    i = i + 1
-                    if current_key == "data.projectData":
-                        print(type(value))
-                    if i % 2 == 0:
-                        Label(self.scrollable_frame, text=current_key, anchor="w", justify="left", bg="#575757").grid(column=0, row=i, sticky="nswe")
-                        Label(self.scrollable_frame, text=item, anchor="w", justify="left", bg="#575757").grid(column=1, row=i, sticky="nswe")
-                    else :
-                        Label(self.scrollable_frame, text=current_key, anchor="w", justify="left").grid(column=0, row=i, sticky="nswe")
-                        Label(self.scrollable_frame, text=item, anchor="w", justify="left").grid(column=1, row=i, sticky="nswe")
-                self.iterate_values(item, current_key, i)

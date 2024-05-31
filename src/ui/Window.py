@@ -1,4 +1,4 @@
-from tkinter import Tk, Menu, Frame, StringVar
+from tkinter import Tk, Menu, Frame
 from src.cfg.Config import ConfigReader
 from src.ui.FrameVersion import FrameVersion
 from src.ui.FrameClarification import FrameClarification
@@ -70,7 +70,7 @@ class Window(Tk):
         self.menu_file.add_separator()
         self.menu_file.add_command(accelerator="Cmd+X", command=self.quit)
 
-        self.menu_bar.add_cascade(menu=self.menu_file)
+        self.menu_bar.add_cascade(label="File", menu=self.menu_file)
 
         menu_edit = Menu(self.menu_bar, tearoff=0)
         menu_edit.add_command(label="Project")
@@ -132,7 +132,8 @@ class Window(Tk):
         self.updateTranslations()
         
     def updateTranslations(self):
-        self.menu_bar.entryconfigure(0, label=self.configReader.getTranslation("MN_File"))
+        
+        #self.menu_bar.entryconfigure(0, label=self.configReader.getTranslation("MN_File"))
         
         self.menu_file.entryconfigure(0, label=self.configReader.getTranslation("MN_New"))
         self.menu_file.entryconfigure(1, label=self.configReader.getTranslation("MN_Open"))
@@ -195,9 +196,6 @@ class Window(Tk):
         
         adminFrame = self.frames["FrameAdmin"]
         adminFrame.updateData()
-        
-        for cle, valeur in self.xmlfileparser.getProjectDataDict().items():
-            print(f"Clé: {cle}, Valeur: {valeur}")
         
     def exportListOfIdeas(self):
         if self.openedProject == None:
