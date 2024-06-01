@@ -96,6 +96,8 @@ class XMLFileParser :
 
 
     def printRecur(self, root, ignoreElems):
+        parents = self.get_parents(root)
+
         """Recursively prints the tree."""
         if root.tag in ignoreElems:
             return
@@ -105,18 +107,30 @@ class XMLFileParser :
 
             if not root.text.isspace():
                 for md in self.matrixDetection:
-                    if not md in self.get_parents(root):
-                        if not "matrix" in self.get_parents(root) or not "Matrix" in self.get_parents(root):
-                            self.projectDataDict[self.get_parents(root)] =  root.attrib.get('name', root.text)
+                    if not md in parents:
+                        if not "matrix" in parents or not "Matrix" in parents:
+                            if parents in self.projectDataDict:
+                                print("Duplicate detected on " + str(parents))
+                            else:
+                                if "ideas" in parents:
+                                    if "Num" in parents:
+                                        self.currentIdeaNum = int(root.attrib.get('name', root.text))
+
+                                    if not "IdeaText" in parents:
+                                        self.projectDataDict[parents + "." + root.attrib.get('name', root.text)] = root.attrib.get('name', root.text)
+                                    else :
+                                        self.projectDataDict[parents + "." +  str(self.currentIdeaNum)] = root.attrib.get('name', root.text)     
+                                else :
+                                    self.projectDataDict[parents] = root.attrib.get('name', root.text)
                     else :
-                        if not md in self.get_parents(root).split('.'):
+                        if not md in parents.split('.'):
                             return
 
-                        if "rows" in self.get_parents(root) :
+                        if "rows" in parents :
                             self.matrixTagKey.append(md + ".rows." + root.attrib.get('name', root.text)) 
-                        elif "columns" in self.get_parents(root):
+                        elif "columns" in parents:
                             self.matrixTagKey.append(md + ".columns." + root.attrib.get('name', root.text))
-                        elif "element" in self.get_parents(root):
+                        elif "element" in parents:
                             self.matrixTagKey.append(md + ".element." + str(self.matrixDetectionCountsElem[md])  + "." + root.attrib.get('name', root.text))
                             self.matrixDetectionCountsElem[md] += 1
 
