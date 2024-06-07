@@ -12,6 +12,7 @@ from src.ui.FrameUserPreferences import FrameUserPreferences
 from src.ui.FrameAdmin import FrameAdmin
 from tkinter.filedialog import askopenfilename
 from datetime import date, datetime
+import platform
 
 import webbrowser
 from src.xml.XMLFileParser import XMLFileParser
@@ -132,8 +133,7 @@ class Window(Tk):
         self.updateTranslations()
         
     def updateTranslations(self):
-        
-        self.menu_bar.entryconfigure(0, label=self.configReader.getTranslation("MN_File"))
+        self.menu_bar.entryconfigure(1 if platform.system() == "Windows" else 0, label=self.configReader.getTranslation("MN_File"))
         
         self.menu_file.entryconfigure(0, label=self.configReader.getTranslation("MN_New"))
         self.menu_file.entryconfigure(1, label=self.configReader.getTranslation("MN_Open"))
@@ -141,9 +141,9 @@ class Window(Tk):
         self.menu_file.entryconfigure(3, label=self.configReader.getTranslation("MN_SaveAs"))
         self.menu_file.entryconfigure(5, label=self.configReader.getTranslation("MN_Exit"))
         
-        self.menu_bar.entryconfigure(1, label=self.configReader.getTranslation("MN_Edit"))
+        self.menu_bar.entryconfigure(2 if platform.system() == "Windows" else 1, label=self.configReader.getTranslation("MN_Edit"))
         
-        self.menu_bar.entryconfigure(2, label=self.configReader.getTranslation("MN_Navigation"))
+        self.menu_bar.entryconfigure(3 if platform.system() == "Windows" else 2, label=self.configReader.getTranslation("MN_Navigation"))
         
         self.menu_navigation.entryconfigure(0, label=self.configReader.getTranslation("MN_TriggeringQuestion"))
         self.menu_navigation.entryconfigure(1, label=self.configReader.getTranslation("MN_Generation"))
@@ -153,7 +153,7 @@ class Window(Tk):
         self.menu_navigation.entryconfigure(5, label=self.configReader.getTranslation("MN_SecondVoting"))
         self.menu_navigation.entryconfigure(6, label=self.configReader.getTranslation("MN_Mapping"))
         
-        self.menu_bar.entryconfigure(3, label=self.configReader.getTranslation("MN_Reports"))
+        self.menu_bar.entryconfigure(4 if platform.system() == "Windows" else 3, label=self.configReader.getTranslation("MN_Reports"))
         self.menu_reports.entryconfigure(0, label=self.configReader.getTranslation("MN_ListOfIdeas"))
         self.menu_reports.entryconfigure(1, label=self.configReader.getTranslation("MN_Clarifications"))
         self.menu_reports.entryconfigure(2, label=self.configReader.getTranslation("MN_ClustersTable"))
@@ -163,7 +163,7 @@ class Window(Tk):
         self.menu_reports.entryconfigure(6, label=self.configReader.getTranslation("MN_Map"))
         self.menu_reports.entryconfigure(7, label=self.configReader.getTranslation("MN_MapAnalysis"))
         
-        self.menu_bar.entryconfigure(4, label=self.configReader.getTranslation("MN_Export"))
+        self.menu_bar.entryconfigure(5 if platform.system() == "Windows" else 4, label=self.configReader.getTranslation("MN_Export"))
         
         self.menu_export.entryconfigure(0, label=self.configReader.getTranslation("MN_ListOfIdeas"))
         self.menu_export.entryconfigure(1, label=self.configReader.getTranslation("MN_Clarifications"))
@@ -173,13 +173,13 @@ class Window(Tk):
         self.menu_export.entryconfigure(5, label=self.configReader.getTranslation("MN_MapData"))
         self.menu_export.entryconfigure(6, label=self.configReader.getTranslation("MN_Matrix"))
         
-        self.menu_bar.entryconfigure(5, label=self.configReader.getTranslation("MN_Utilities"))
+        self.menu_bar.entryconfigure(6 if platform.system() == "Windows" else 5, label=self.configReader.getTranslation("MN_Utilities"))
         
         self.menu_utilities.entryconfigure(0, label=self.configReader.getTranslation("MN_PrintIdeas"))
         self.menu_utilities.entryconfigure(1, label=self.configReader.getTranslation("MN_PrintHeadings"))
         self.menu_utilities.entryconfigure(2, label=self.configReader.getTranslation("MN_ExportTimestamps"))
         
-        self.menu_bar.entryconfigure(6, label=self.configReader.getTranslation("MN_Help"))
+        self.menu_bar.entryconfigure(7 if platform.system() == "Windows" else 6, label=self.configReader.getTranslation("MN_Help"))
         
         self.menu_help.entryconfigure(0, label=self.configReader.getTranslation("MN_Wiki"))
         self.menu_help.entryconfigure(1, label=self.configReader.getTranslation("MN_FAQ"))
