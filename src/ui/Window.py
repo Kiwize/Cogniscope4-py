@@ -133,7 +133,7 @@ class Window(Tk):
         
     def updateTranslations(self):
         
-        self.menu_bar.entryconfigure(0, label=self.configReader.getTranslation("MN_File"))
+        #self.menu_bar.entryconfigure(0, label=self.configReader.getTranslation("MN_File"))
         
         self.menu_file.entryconfigure(0, label=self.configReader.getTranslation("MN_New"))
         self.menu_file.entryconfigure(1, label=self.configReader.getTranslation("MN_Open"))
