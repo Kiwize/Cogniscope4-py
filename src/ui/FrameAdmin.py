@@ -14,11 +14,12 @@ class FrameAdmin(Frame):
         self.topButtonGrid = Frame(self)
         self.topButtonGrid.grid(column=2, row=0, sticky="news")
 
-        self.rawButton = Button(self.topButtonGrid, text="Raw")
+        
+        self.rawButton = Button(self.topButtonGrid, text="Raw", command=lambda:self.displayTabIdeas("raw"))
         self.rawButton.grid(column=0, row=0)
-        self.byIdeaNumButton = Button(self.topButtonGrid, text="By Idea Num")
+        self.byIdeaNumButton = Button(self.topButtonGrid, text="By Idea Num", command=lambda:self.displayTabIdeas("byideanum"))
         self.byIdeaNumButton.grid(column=1, row=0)
-        self.byVotesButton = Button(self.topButtonGrid, text="By Votes")
+        self.byVotesButton = Button(self.topButtonGrid, text="By Votes", command=lambda:self.displayTabIdeas("byvotes"))
         self.byVotesButton.grid(column=2, row=0)
 
         #============= Project DATA ================
@@ -99,7 +100,7 @@ class FrameAdmin(Frame):
     def updateData(self):
         if self.xmlparser.getProject() != None :
             self.projectData.config(text="")
-            project = self.xmlparser.getProject()
+            self.project = self.xmlparser.getProject()
             
             print("Displaying file content into admin page...")
             i = 0
@@ -117,7 +118,7 @@ class FrameAdmin(Frame):
             }
 
             #self.iterate_values(project.getProjectTagsDataDict(), i)    
-            for key, val in project.getProjectTagsDataDict().items():
+            for key, val in self.project.getProjectTagsDataDict().items():
                 if "IdeaText" in str(key) : ideaCount += 1
                 elif "cluster.Name" in str(key) : clusterCount += 1
 
@@ -135,20 +136,11 @@ class FrameAdmin(Frame):
                     lastSelectedCluster = int(val)
                 elif "cluster.Name" in str(key):
                     Label(self.projectClustersFrame, text=str(val), anchor="w", justify="left").grid(column=1, row=lastSelectedCluster, sticky="news")
-
-                #Modify this part to sort rows by votes / idea num or raw display
-                if "idea" in str(key):
-                    i = i + 1
-                    if i % 2 == 0:
-                        Label(self.scrollable_frame, text=key.replace("classNo", "clusterID"), anchor="w", justify="left", bg="#b5b5b5").grid(column=0, row=i, sticky="nswe")
-                        Label(self.scrollable_frame, text=val, anchor="w", justify="left", bg="#b5b5b5").grid(column=1, row=i, sticky="nswe")
-                    else :
-                        Label(self.scrollable_frame, text=key.replace("classNo", "clusterID"), anchor="w", justify="left").grid(column=0, row=i, sticky="nswe")
-                        Label(self.scrollable_frame, text=val, anchor="w", justify="left").grid(column=1, row=i, sticky="nswe")
                 
         else :
             self.projectData = Label(self, text="No project opened...")
 
+        self.displayTabIdeas("raw")
 
         self.numOfIdeas.config(text=str(ideaCount))
         self.numOfClusters.config(text=str(clusterCount))
@@ -158,4 +150,30 @@ class FrameAdmin(Frame):
 
         Label(self.projectClustersFrame, text="Ideas Selected for Mapping", anchor="w", justify="left").grid(column=0, row=lastSelectedCluster, sticky="news")
         Label(self.projectClustersFrame, text="Ideas Mapped", anchor="w", justify="left").grid(column=0, row=lastSelectedCluster + 1, sticky="news")
+
+    def displayTabIdeas(self, method):
+        #Modify this part to sort rows by votes / idea num or raw display
+        i = 0
+        try :
+            match method:
+                case "byvotes":
+                    print("byvotes")
+
+                case "byideanum":
+                    print("byideanum")
+
+                case _:
+                    print("raw")
+                    for key, val in self.project.getProjectTagsDataDict().items():
+                        if "idea" in str(key):
+                            i = i + 1
+                            if i % 2 == 0:
+                                Label(self.scrollable_frame, text=key.replace("classNo", "clusterID"), anchor="w", justify="left", bg="#b5b5b5").grid(column=0, row=i, sticky="nswe")
+                                Label(self.scrollable_frame, text=val, anchor="w", justify="left", bg="#b5b5b5").grid(column=1, row=i, sticky="nswe")
+                            else :
+                                Label(self.scrollable_frame, text=key.replace("classNo", "clusterID"), anchor="w", justify="left").grid(column=0, row=i, sticky="nswe")
+                                Label(self.scrollable_frame, text=val, anchor="w", justify="left").grid(column=1, row=i, sticky="nswe")
+
+        except AttributeError :
+            print("No project opened !")
 
