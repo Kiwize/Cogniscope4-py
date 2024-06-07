@@ -96,25 +96,17 @@ class XMLFileParser :
                 for md in self.matrixDetection:
                     if not md in parents:
                         if not "matrix" in parents or not "Matrix" in parents:
-                            if parents in self.projectDataDict:
-                                print("Duplicate detected on " + str(parents))
-                            else:
+                            if not parents in self.projectDataDict:
                                 if "ideas" in parents:
                                     if "Num" in parents:
                                         self.currentIdeaNum = int(root.attrib.get('name', root.text))
 
-                                    if not "IdeaText" in parents:
-                                        self.projectDataDict[parents + "." + root.attrib.get('name', root.text)] = root.attrib.get('name', root.text)
-                                    else :
-                                        self.projectDataDict[parents + "." +  str(self.currentIdeaNum)] = root.attrib.get('name', root.text)
+                                    self.projectDataDict[parents + "." +  str(self.currentIdeaNum)] = root.attrib.get('name', root.text)
                                 elif "cluster" in parents:
                                     if "Num" in parents:
                                         self.currentClusterNum = int(root.attrib.get('name', root.text))
 
-                                    if not "Name" in parents:
-                                        self.projectDataDict[parents + "." + root.attrib.get('name', root.text)] = root.attrib.get('name', root.text)
-                                    else :
-                                        self.projectDataDict[parents + "." +  str(self.currentClusterNum)] = root.attrib.get('name', root.text)      
+                                    self.projectDataDict[parents + "." +  str(self.currentClusterNum)] = root.attrib.get('name', root.text)      
                                 else :
                                     self.projectDataDict[parents] = root.attrib.get('name', root.text)
                     else :

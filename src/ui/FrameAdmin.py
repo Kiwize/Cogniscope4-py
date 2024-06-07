@@ -140,10 +140,10 @@ class FrameAdmin(Frame):
                 if "idea" in str(key):
                     i = i + 1
                     if i % 2 == 0:
-                        Label(self.scrollable_frame, text=key, anchor="w", justify="left", bg="#b5b5b5").grid(column=0, row=i, sticky="nswe")
+                        Label(self.scrollable_frame, text=key.replace("classNo", "clusterID"), anchor="w", justify="left", bg="#b5b5b5").grid(column=0, row=i, sticky="nswe")
                         Label(self.scrollable_frame, text=val, anchor="w", justify="left", bg="#b5b5b5").grid(column=1, row=i, sticky="nswe")
                     else :
-                        Label(self.scrollable_frame, text=key, anchor="w", justify="left").grid(column=0, row=i, sticky="nswe")
+                        Label(self.scrollable_frame, text=key.replace("classNo", "clusterID"), anchor="w", justify="left").grid(column=0, row=i, sticky="nswe")
                         Label(self.scrollable_frame, text=val, anchor="w", justify="left").grid(column=1, row=i, sticky="nswe")
                 
         else :
