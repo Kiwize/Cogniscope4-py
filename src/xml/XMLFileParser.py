@@ -27,25 +27,16 @@ class XMLFileParser :
             tree = etree.parse(self.currentFile)
             self.root = tree.getroot()
 
-            ignoreElems = ['displayNameKey', 'displayName']
-
             for md in self.matrixDetection:
                 self.matrixDetectionCountsElem[md] = 0
 
-            self.printRecur(self.root, ignoreElems)
+            self.printRecur(self.root)
 
             self.dedupMatrixTagKey = []
 
             for i in self.matrixTagKey:
                 if i not in self.dedupMatrixTagKey:
                      self.dedupMatrixTagKey.append(i)
-
-            print("====== MATRICES =======")
-
-            for elem in self.dedupMatrixTagKey:
-                print(elem)
-
-            print("==============")
 
             matx = 0
             maty = 0
@@ -67,7 +58,7 @@ class XMLFileParser :
                         if "element" in mat :
                             if not matx == 0 and not maty == 0:
                                 print("Displaying matrix " + str(matx) + " X " + str(maty) + "   " + md)
-                                self.projectDataDict[md + ".matrix"] = self.projectDataDict[md + ".matrix"] + mat.split(".")[3]
+                                self.projectDataDict[md + ".matrix"] = self.projectDataDict[md + ".matrix"] + mat.split(".")[3] + "  "
                                 self.matrixElemCounter += 1
 
                                 if self.matrixElemCounter >= maty:
@@ -95,12 +86,8 @@ class XMLFileParser :
         return path
 
 
-    def printRecur(self, root, ignoreElems):
+    def printRecur(self, root):
         parents = self.get_parents(root)
-
-        """Recursively prints the tree."""
-        if root.tag in ignoreElems:
-            return
         
         if root.text:
             #print (' ' *self.indent + '%s: %s' % (root.tag.title(), root.attrib.get('name', root.text)))
@@ -119,7 +106,15 @@ class XMLFileParser :
                                     if not "IdeaText" in parents:
                                         self.projectDataDict[parents + "." + root.attrib.get('name', root.text)] = root.attrib.get('name', root.text)
                                     else :
-                                        self.projectDataDict[parents + "." +  str(self.currentIdeaNum)] = root.attrib.get('name', root.text)     
+                                        self.projectDataDict[parents + "." +  str(self.currentIdeaNum)] = root.attrib.get('name', root.text)
+                                elif "cluster" in parents:
+                                    if "Num" in parents:
+                                        self.currentClusterNum = int(root.attrib.get('name', root.text))
+
+                                    if not "Name" in parents:
+                                        self.projectDataDict[parents + "." + root.attrib.get('name', root.text)] = root.attrib.get('name', root.text)
+                                    else :
+                                        self.projectDataDict[parents + "." +  str(self.currentClusterNum)] = root.attrib.get('name', root.text)      
                                 else :
                                     self.projectDataDict[parents] = root.attrib.get('name', root.text)
                     else :
@@ -134,12 +129,8 @@ class XMLFileParser :
                             self.matrixTagKey.append(md + ".element." + str(self.matrixDetectionCountsElem[md])  + "." + root.attrib.get('name', root.text))
                             self.matrixDetectionCountsElem[md] += 1
 
-
-        self.indent += 4
         for elem in root:
-            self.printRecur(elem, ignoreElems)
-
-        self.indent -= 4
+            self.printRecur(elem)
 
     
 
