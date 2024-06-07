@@ -57,7 +57,7 @@ class XMLFileParser :
                     if md == mat.split(".")[0]:
                         if "element" in mat :
                             if not matx == 0 and not maty == 0:
-                                print("Displaying matrix " + str(matx) + " X " + str(maty) + "   " + md)
+                                #print("Displaying matrix " + str(matx) + " X " + str(maty) + "   " + md)
                                 self.projectDataDict[md + ".matrix"] = self.projectDataDict[md + ".matrix"] + mat.split(".")[3] + "  "
                                 self.matrixElemCounter += 1
 
@@ -109,6 +109,15 @@ class XMLFileParser :
                                     self.projectDataDict[parents + "." +  str(self.currentClusterNum)] = root.attrib.get('name', root.text)      
                                 else :
                                     self.projectDataDict[parents] = root.attrib.get('name', root.text)
+
+                        if "data.matrix" in parents:
+                            if "id" in parents :
+                                self.valueCounter = 1
+                                self.lastMatriceID = str(root.attrib.get('name', root.text))
+                            elif "values.value" in parents :
+                                if self.valueCounter == 1 or self.valueCounter % 4 == 1: 
+                                    self.projectDataDict[parents + "." + self.lastMatriceID + "." + str(int((self.valueCounter - 1) / 4))] = str(root.attrib.get('name', root.text))
+                                self.valueCounter += 1
                     else :
                         if not md in parents.split('.'):
                             return

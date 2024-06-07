@@ -191,10 +191,11 @@ class Window(Tk):
 
     def open_file(self):
         fn = askopenfilename()
+        self.xmlfileparser = XMLFileParser()
         self.xmlfileparser.openFile(fn)
         self.openedProject = self.xmlfileparser.getProject()
-        
         adminFrame = self.frames["FrameAdmin"]
+        adminFrame.setXMLFileParser(self.xmlfileparser)
         adminFrame.updateData()
         
     def exportListOfIdeas(self):

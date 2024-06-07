@@ -8,8 +8,9 @@ class FrameAdmin(Frame):
         self.xmlparser = None
 
         self.rowconfigure([0], weight=0)
-        self.rowconfigure([1, 2], weight=1)
-        self.columnconfigure([0, 1, 2], weight=1)
+        self.rowconfigure([1, 2], weight=2)
+        self.columnconfigure([0, 1], weight=0)
+        self.columnconfigure([2], weight=10)
 
         self.topButtonGrid = Frame(self)
         self.topButtonGrid.grid(column=2, row=0, sticky="news")
@@ -78,10 +79,16 @@ class FrameAdmin(Frame):
         self.projectMatriceFrame = Frame(self, highlightthickness=1, highlightbackground="black")
         self.projectMatriceFrame.grid(column=2, row=2, sticky="news")
 
+        for i in range(0, 50):
+            self.projectMatriceFrame.grid_rowconfigure(i, weight=0)
+            self.projectMatriceFrame.grid_columnconfigure(i, weight=0)
+
         Label(self.projectMatriceFrame, text="Project Matrix").grid(column=0, row=0)
         self.ISMMatrix = Label(self.projectMatriceFrame, text="No matrix opened...")
         self.ISMMatrix.grid(column=0, row=1)
+        self.matrix = {}
 
+        
         #==================== Tabular SCROLLABLE ==================
 
         self.scrollable_frame = customtkinter.CTkScrollableFrame(self)
@@ -98,12 +105,22 @@ class FrameAdmin(Frame):
         self.xmlparser = xmlparser
         
     def updateData(self):
+        #Clear previous data if any
+        self.clearScrollableFrame()
+        self.matrix.clear()
+
+        for w in self.projectMatriceFrame.grid_slaves():
+            w.grid_remove()
+            w.destroy()
+
+        for w in self.projectClustersFrame.grid_slaves():
+            w.grid_remove()
+            w.destroy()
+
         if self.xmlparser.getProject() != None :
             self.projectData.config(text="")
             self.project = self.xmlparser.getProject()
-            
-            print("Displaying file content into admin page...")
-            i = 0
+            self.dataDict = self.project.getProjectTagsDataDict()
 
             lastSelectedCluster = -1
             ideaCount = 0
@@ -113,9 +130,34 @@ class FrameAdmin(Frame):
             key_mapping = {
                 "PrjName": self.prjName,
                 "eventLoc": self.eventLoc,
-                "EventName": self.eventName,
-                "ISMmatrix.matrix": self.ISMMatrix
+                "EventName": self.eventName
             }
+
+
+            for key in self.dataDict:
+                if "data.matrix.line" in str(key):
+                    self.matrix[str(key)] = str(self.dataDict[key])
+
+            lastMatrixId = -1
+            matrixLineCount = 0
+
+            for key in self.matrix:
+                if "line.values.value" in key:
+                    try:
+                        if int(key.split(".")[5]) != lastMatrixId:
+                            lastMatrixId = int(key.split(".")[5])
+
+                            print("LINE ID : " + str(key))
+                            matrixLineCount += 1
+                            Label(self.projectMatriceFrame, text=str(matrixLineCount)).grid(column=matrixLineCount, row=0, sticky="news")
+                            Label(self.projectMatriceFrame, text=str(matrixLineCount)).grid(column=0, row=matrixLineCount, sticky="news")
+
+                            Label(self.projectMatriceFrame, text=self.matrix[key]).grid(column=1, row=matrixLineCount)
+                        else:
+                            Label(self.projectMatriceFrame, text=self.matrix[key]).grid(column=(int(key.split(".")[6]) + 1), row=matrixLineCount)
+
+                    except IndexError:
+                        print("ERR")
 
             #self.iterate_values(project.getProjectTagsDataDict(), i)    
             for key, val in self.project.getProjectTagsDataDict().items():
@@ -152,18 +194,47 @@ class FrameAdmin(Frame):
         Label(self.projectClustersFrame, text="Ideas Mapped", anchor="w", justify="left").grid(column=0, row=lastSelectedCluster + 1, sticky="news")
 
     def displayTabIdeas(self, method):
+        self.clearScrollableFrame()
+
+        Label(self.scrollable_frame, text="Idea Number").grid(column=0, row=0)
+        Label(self.scrollable_frame, text="Number of Votes").grid(column=1, row=0)
+        Label(self.scrollable_frame, text="Text").grid(column=2, row=0)
+
         #Modify this part to sort rows by votes / idea num or raw display
         i = 0
+        self.ideasDict = {} #Contains array which represents ideas (num, text, votes)
         try :
             match method:
                 case "byvotes":
-                    print("byvotes")
+                    ideaCount = 1
+
+                    self.iterateOverIdeas()
+
+                    ideaList = list(self.ideasDict.values())
+                    ideaList.sort(key=lambda x: x[2], reverse=True)
+
+                    for idea in ideaList:
+                        Label(self.scrollable_frame, text=str(idea[0])).grid(column=0, row=ideaCount)     
+                        Label(self.scrollable_frame, text=str(idea[1]), anchor="w", justify="left").grid(column=2, row=ideaCount, sticky="news")
+                        Label(self.scrollable_frame, text=str(idea[2])).grid(column=1, row=ideaCount)
+                        ideaCount += 1
 
                 case "byideanum":
-                    print("byideanum")
+                    ideaCount = 1
 
+                    self.iterateOverIdeas()
+
+                    ideaList = list(self.ideasDict.values())
+                    ideaList.sort(key=lambda x: x[0], reverse=True)
+
+                    for idea in ideaList:
+                        Label(self.scrollable_frame, text=str(idea[0])).grid(column=0, row=ideaCount)     
+                        Label(self.scrollable_frame, text=str(idea[1]), anchor="w", justify="left").grid(column=2, row=ideaCount, sticky="news")
+                        Label(self.scrollable_frame, text=str(idea[2])).grid(column=1, row=ideaCount)
+                        ideaCount += 1
+                    
                 case _:
-                    print("raw")
+                    self.clearScrollableFrame()
                     for key, val in self.project.getProjectTagsDataDict().items():
                         if "idea" in str(key):
                             i = i + 1
@@ -176,4 +247,22 @@ class FrameAdmin(Frame):
 
         except AttributeError :
             print("No project opened !")
+
+    def iterateOverIdeas(self):
+        lastIdeaNum = -1
+        self.ideasDict = {}
+        for key, val in self.project.getProjectTagsDataDict().items():
+            if "idea" in key:
+                if "Num" in key and int(key.split(".")[4]) != lastIdeaNum:
+                    lastIdeaNum = int(key.split(".")[4])
+                    self.ideasDict[lastIdeaNum] = [lastIdeaNum]
+                elif "IdeaText" in key:
+                    self.ideasDict[lastIdeaNum].append(str(val))
+                elif "votes" in key:
+                    self.ideasDict[lastIdeaNum].append(str(val))
+
+    def clearScrollableFrame(self):
+        for label in self.scrollable_frame.grid_slaves():
+            label.grid_forget() 
+
 
