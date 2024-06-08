@@ -2,7 +2,7 @@
 
 class Idea:
 
-    def __init__(self, num, text, classNo, votes, stat, clarification):
+    def __init__(self, num, text = None, classNo = None, votes = None, stat = None, clarification = ""):
         self.num = num
         self.text = text
         self.classNo = classNo
@@ -10,6 +10,11 @@ class Idea:
         self.stat = stat
         self.clarification = clarification
 
+    def isComplete(self) -> bool :
+        if not self.text is None and not self.classNo is None and not self.votes is None and not self.stat is None:
+            return True
+        
+        return False
 
     def getNum(self):
         return self.num
@@ -28,3 +33,18 @@ class Idea:
     
     def getClarification(self):
         return self.clarification
+    
+    def setText(self, text):
+        self.text = text
+
+    def setClusterNum(self, num):
+        self.classNo = num
+
+    def setVotes(self, votes):
+        self.votes = votes
+
+    def setStat(self, stat):
+        self.stat = stat
+
+    def setClarification(self, clarification):
+        self.clarification = clarification

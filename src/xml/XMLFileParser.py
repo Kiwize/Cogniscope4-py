@@ -1,9 +1,7 @@
 #This file opens XMLs files from Concertina and Cognisope 3 to import them in Cogniscope 4
-from bs4 import BeautifulSoup
 from src.model.Project import Project
-import xml.etree.ElementTree as ET
 from lxml import etree
-import pprint
+from src.model.Idea import Idea
 
 class XMLFileParser :
 
@@ -19,7 +17,11 @@ class XMLFileParser :
         self.matrixDetectionCountsElem = {}
         self.matrixElemCounter = 0
 
+        self.currentIdeaObj = None
+        self.currentIdeaNum = -100
+
     def openFile(self, filePath):
+        self.project = Project()
         self.currentFile = filePath
         
         with open(filePath, 'r+', encoding='utf8') as f:
@@ -66,7 +68,7 @@ class XMLFileParser :
                                     self.matrixElemCounter = 0
             
 
-            self.project = Project(self.projectDataDict)
+        self.project.setDataDict(self.projectDataDict)
             
     def getProject(self) -> Project:
         return self.project
@@ -99,9 +101,25 @@ class XMLFileParser :
                             if not parents in self.projectDataDict:
                                 if "ideas" in parents:
                                     if "Num" in parents:
-                                        self.currentIdeaNum = int(root.attrib.get('name', root.text))
+                                        if not int(root.attrib.get('name', root.text)) is self.currentIdeaNum:
+                                            self.currentIdeaNum = int(root.attrib.get('name', root.text))
+                                            self.currentIdeaObj = Idea(self.currentIdeaNum)
+                                       
+                                    if "IdeaText" in parents:
+                                        self.currentIdeaObj.setText(root.attrib.get('name', root.text))
+                                    elif "classNo" in parents:
+                                        self.currentIdeaObj.setClusterNum(root.attrib.get('name', root.text))
+                                    elif "votes" in parents:
+                                        self.currentIdeaObj.setVotes(root.attrib.get('name', root.text))
+                                    elif "stat" in parents:
+                                        self.currentIdeaObj.setStat(root.attrib.get('name', root.text))
+                                    elif "clarification" in parents:
+                                        self.currentIdeaObj.setClarification(root.attrib.get('name', root.text))             
+                                        
+                                    if not self.currentIdeaObj is None and self.currentIdeaObj.isComplete():
+                                        self.project.addIdea(self.currentIdeaObj)    
 
-                                    self.projectDataDict[parents + "." +  str(self.currentIdeaNum)] = root.attrib.get('name', root.text)
+                                    self.projectDataDict[parents + "." +  str(self.currentIdeaNum)] = root.attrib.get('name', root.text)          
                                 elif "cluster" in parents:
                                     if "Num" in parents:
                                         self.currentClusterNum = int(root.attrib.get('name', root.text))

@@ -294,18 +294,9 @@ class FrameAdmin(Frame):
             print("No project opened !")
 
     def iterateOverIdeas(self):
-        lastIdeaNum = -1
         self.ideasDict = {}
-        for key, val in self.project.getProjectTagsDataDict().items():
-            if "idea" in key:
-                if "Num" in key and int(key.split(".")[4]) != lastIdeaNum:
-                    lastIdeaNum = int(key.split(".")[4])
-                    self.ideasDict[lastIdeaNum] = [lastIdeaNum]
-                else:
-                    try :
-                        self.ideasDict[lastIdeaNum].append(str(val))
-                    except Exception :
-                        print("")
+        for idea in self.project.getIdeas():
+            self.ideasDict[idea.getNum()] = [idea.getNum(), idea.getText(), idea.getClassNo(), idea.getVotes(), idea.getStat()]
 
     def clearScrollableFrame(self):
         for label in self.scrollable_frame.grid_slaves():

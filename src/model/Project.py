@@ -1,10 +1,23 @@
-from src.model.Cluster import Cluster
 from src.model.Idea import Idea
 
 class Project :
-    def __init__(self, dict):
+    def __init__(self, dict = {}):
             
         self.projectTagsDataDict = dict
+        self.ideas = []
+
+    def addIdea(self, idea: Idea):
+        for a in self.ideas:
+            if a.getNum() is idea.getNum():
+                return
+            
+        self.ideas.append(idea)
+
+    def setDataDict(self, dict : dict):
+        self.projectTagsDataDict = dict
+
+    def getIdeas(self) -> list:
+        return self.ideas
             
     def getProjectTagsDataDict(self):
         return self.projectTagsDataDict
@@ -38,6 +51,3 @@ class Project :
     
     def getClusters(self):
         return self.clusters
-    
-    def getIdeas(self):
-        return self.ideas

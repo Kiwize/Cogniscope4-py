@@ -179,7 +179,7 @@ class Window(Tk):
         self.menu_utilities.entryconfigure(1, label=self.configReader.getTranslation("MN_PrintHeadings"))
         self.menu_utilities.entryconfigure(2, label=self.configReader.getTranslation("MN_ExportTimestamps"))
         
-        self.menu_bar.entryconfigure(7 if platform.system() == "Windows" else 6, label=self.configReader.getTranslation("MN_Help"))
+        self.menu_bar.entryconfigure(7 if platform.system() == "Windows" else 6 , label=self.configReader.getTranslation("MN_Help"))
         
         self.menu_help.entryconfigure(0, label=self.configReader.getTranslation("MN_Wiki"))
         self.menu_help.entryconfigure(1, label=self.configReader.getTranslation("MN_FAQ"))
@@ -194,9 +194,13 @@ class Window(Tk):
         self.xmlfileparser = XMLFileParser()
         self.xmlfileparser.openFile(fn)
         self.openedProject = self.xmlfileparser.getProject()
+
         adminFrame = self.frames["FrameAdmin"]
         adminFrame.setXMLFileParser(self.xmlfileparser)
         adminFrame.updateData()
+
+        generationIdeaFrame = self.frames["FrameGeneration"]
+        generationIdeaFrame.loadProjectIdeas(self.xmlfileparser.getProject().getIdeas())
         
     def exportListOfIdeas(self):
         if self.openedProject == None:
