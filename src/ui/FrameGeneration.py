@@ -27,6 +27,10 @@ class FrameGeneration(Frame):
         self.nextButton.grid(column=2, row=2)
         self.nextButton.configure(bg=self.frame_bg_color)
 
+        self.deleteButton = RoundedButton(self, text="Delete", fill_color="#dd0000", hover_color="#bb0000", command=lambda: self.deleteIdea())
+        self.deleteButton.grid(column=0, row=3)
+        self.deleteButton.configure(bg=self.frame_bg_color)
+
         self.ideaLabel = Label(self, text="No project opened...", highlightbackground="black", highlightthickness=2, bg=self.frame_bg_color, font="Helvetica 12")
         self.ideaLabel.grid(column=1, row=1)
 
@@ -34,6 +38,12 @@ class FrameGeneration(Frame):
         self.ideaNavigationBar.grid(column=1, row=3, pady=6)
 
         self.title.grid(column=1, row=0)
+
+    def deleteIdea(self):
+        if not self.selectedIdea is None:
+            self.ideas.remove(self.selectedIdea)
+            self.drawButtons()
+            self.showIdea(self.ideas[0])
 
     def loadProjectIdeas(self, ideas: list[Idea]) -> None:
         self.ideas = ideas
@@ -47,6 +57,10 @@ class FrameGeneration(Frame):
 
     def drawButtons(self):
         i = 0
+        for w in self.ideaNavigationBar.grid_slaves():
+            w.grid_remove()
+            w.destroy()
+
         for idea in self.ideas:
             self.ideaNavigationBar.grid_columnconfigure(i, minsize=30)
             RoundedButton(self.ideaNavigationBar, text=str(idea.getNum()), command=lambda a=idea: self.showIdea(a), background=self.frame_bg_color, minwidth=40, fill_color="red" if self.selectedIdea.getNum() is idea.getNum() else "white", hover_color="#bb0000" if self.selectedIdea.getNum() is idea.getNum() else "lightgrey", font="Helvetica 9 bold" if self.selectedIdea.getNum() is idea.getNum() else "Helvetica 8").grid(column=i, row=0, sticky="news")
