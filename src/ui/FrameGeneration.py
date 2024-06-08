@@ -20,16 +20,23 @@ class FrameGeneration(Frame):
         self.title = Label(self, text="Idea Generation", font="Helvetica 18 bold", bg=self.frame_bg_color)
 
         self.previousButton = RoundedButton(self, text="<", command=lambda: self.previousIdea())
-        self.previousButton.grid(column=0, row=2)
+        self.previousButton.grid(column=0, row=2, sticky="w")
         self.previousButton.configure(bg=self.frame_bg_color)
 
         self.nextButton = RoundedButton(self, text=">", command=lambda: self.nextIdea())
         self.nextButton.grid(column=2, row=2)
         self.nextButton.configure(bg=self.frame_bg_color)
 
-        self.deleteButton = RoundedButton(self, text="Delete", fill_color="#dd0000", hover_color="#bb0000", command=lambda: self.deleteIdea())
-        self.deleteButton.grid(column=0, row=3)
+        self.actionButtonsFrame = Frame(self, bg=self.frame_bg_color)
+        self.actionButtonsFrame.grid(column=0, row=3)
+
+        self.deleteButton = RoundedButton(self.actionButtonsFrame, text="Delete", fill_color="#dd0000", hover_color="#bb0000", command=lambda: self.deleteIdea())
+        self.deleteButton.grid(column=1, row=0)
         self.deleteButton.configure(bg=self.frame_bg_color)
+
+        self.saveButton = RoundedButton(self.actionButtonsFrame, text="Save", fill_color="#4898e8", hover_color="#30659b", command=lambda: self.saveIdeaToPDF())
+        self.saveButton.grid(column=0, row=0)
+        self.saveButton.configure(bg=self.frame_bg_color)
 
         self.ideaLabel = Label(self, text="No project opened...", highlightbackground="black", highlightthickness=2, bg=self.frame_bg_color, font="Helvetica 12")
         self.ideaLabel.grid(column=1, row=1)
@@ -38,6 +45,9 @@ class FrameGeneration(Frame):
         self.ideaNavigationBar.grid(column=1, row=3, pady=6)
 
         self.title.grid(column=1, row=0)
+
+    def saveIdeaToPDF(self):
+        messagebox.showinfo("Not implemented yet", "This feature isn't completed yet !")
 
     def deleteIdea(self):
         delete = messagebox.askyesno("Please confirm", "Are you sure to delete the following idea ? :\r" + self.selectedIdea.getText() + "\r\rThis action cannot be reverted.")
