@@ -1,4 +1,4 @@
-from tkinter import Frame, Label, Button
+from tkinter import Frame, Label, Button, messagebox
 from src.ui.components.RoundedButton import RoundedButton
 from src.model.Idea import Idea
 
@@ -40,7 +40,9 @@ class FrameGeneration(Frame):
         self.title.grid(column=1, row=0)
 
     def deleteIdea(self):
-        if not self.selectedIdea is None:
+        delete = messagebox.askyesno("Please confirm", "Are you sure to delete the following idea ? :\r" + self.selectedIdea.getText() + "\r\rThis action cannot be reverted.")
+
+        if not self.selectedIdea is None and delete:
             self.ideas.remove(self.selectedIdea)
             self.drawButtons()
             self.showIdea(self.ideas[0])
@@ -60,6 +62,11 @@ class FrameGeneration(Frame):
         for w in self.ideaNavigationBar.grid_slaves():
             w.grid_remove()
             w.destroy()
+
+        self.grid_columnconfigure([0, 2], weight=0)
+        self.grid_columnconfigure([1], weight=5)
+
+        self.grid_rowconfigure([1], weight=5)
 
         for idea in self.ideas:
             self.ideaNavigationBar.grid_columnconfigure(i, minsize=30)

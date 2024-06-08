@@ -137,8 +137,6 @@ class FrameAdmin(Frame):
             self.dataDict = self.project.getProjectTagsDataDict()
 
             lastSelectedCluster = -1
-            ideaCount = 0
-            ideaMappedCount = 0
             clusterCount = 0
 
             key_mapping = {
@@ -180,11 +178,7 @@ class FrameAdmin(Frame):
             Label(self.projectClustersFrame, text="Cluster Num", anchor="w", justify="left", bg="#dae8fc").grid(column=0, row=0, sticky="news")
             Label(self.projectClustersFrame, text="Cluster Name", anchor="w", justify="left", bg="#dae8fc").grid(column=1, row=0, sticky="news")
             for key, val in self.project.getProjectTagsDataDict().items():
-                if "IdeaText" in str(key) : ideaCount += 1
-                elif "cluster.Name" in str(key) : clusterCount += 1
-
-                if "idea.classNo" in str(key) :
-                    ideaMappedCount += 1
+                if "cluster.Name" in str(key) : clusterCount += 1
 
                 for k, widget in key_mapping.items():
                     if k in str(key):
@@ -204,9 +198,9 @@ class FrameAdmin(Frame):
 
         self.displayTabIdeas("raw")
 
-        self.numOfIdeas.config(text=str(ideaCount))
+        self.numOfIdeas.config(text=str(len(self.project.getIdeas())))
         self.numOfClusters.config(text=str(clusterCount))
-        self.numOfIdeasMapped.config(text=str(ideaMappedCount))
+        self.numOfIdeasMapped.config(text=str(len(self.project.getIdeas())))
 
         lastSelectedCluster += 2
 

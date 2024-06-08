@@ -57,6 +57,9 @@ class Window(Tk):
         self.title("Cogniscope 4")
 
     def show_frame(self, page_name):
+        if page_name == "FrameAdmin":
+            self.adminFrame.updateData()
+
         frame = self.frames[page_name]
         frame.tkraise()
 
@@ -195,12 +198,12 @@ class Window(Tk):
         self.xmlfileparser.openFile(fn)
         self.openedProject = self.xmlfileparser.getProject()
 
-        adminFrame = self.frames["FrameAdmin"]
-        adminFrame.setXMLFileParser(self.xmlfileparser)
-        adminFrame.updateData()
+        self.adminFrame = self.frames["FrameAdmin"]
+        self.adminFrame.setXMLFileParser(self.xmlfileparser)
+        self.adminFrame.updateData()
 
-        generationIdeaFrame = self.frames["FrameGeneration"]
-        generationIdeaFrame.loadProjectIdeas(self.xmlfileparser.getProject().getIdeas())
+        self.generationIdeaFrame = self.frames["FrameGeneration"]
+        self.generationIdeaFrame.loadProjectIdeas(self.xmlfileparser.getProject().getIdeas())
         
     def exportListOfIdeas(self):
         if self.openedProject == None:
