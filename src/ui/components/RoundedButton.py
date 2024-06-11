@@ -1,14 +1,17 @@
 import tkinter as tk
 
 class RoundedButton(tk.Canvas):
-    def __init__(self, master=None, text="", minwidth = 100, fill_color="white", hover_color="lightgrey", font="Helvetica 8 bold", command=None, **kwargs):
+    def __init__(self, master=None, text="", minwidth = 100, corner_radius=20, text_color="black", fill_color="white", hover_color="lightgrey", font="Helvetica 8 bold", outline_color="black", command=None, **kwargs):
         super().__init__(master, **kwargs)
         self.command = command
         self.text = text
         self.fill_color = fill_color
+        self.outline_color = outline_color
+        self.text_color = text_color
+        self.corner_radius = corner_radius
         self.min_width = minwidth
         self.hover_color = hover_color
-        self.corner_radius = kwargs.get("corner_radius", 20)
+        self.corner_radius = kwargs.get("corner_radius", self.corner_radius)
         
         # Utilisation de tk.Label pour obtenir la largeur du texte
         temp_label = tk.Label(master, text=self.text, font=font)
@@ -17,13 +20,13 @@ class RoundedButton(tk.Canvas):
         temp_label.destroy()
 
 
-        self.width = self.text_width + 20 if self.text_width + 20 > self.min_width else self.min_width # Ajout de padding horizontal
+        self.width = self.text_width + self.corner_radius if self.text_width + self.corner_radius > self.min_width else self.min_width # Ajout de padding horizontal
         self.height = kwargs.get("height", 40)
         
         self.configure(width=self.width, height=self.height, bg=self['bg'], highlightthickness=0)
         
-        self.button = self.create_rounded_rectangle(5, 5, self.width-5, self.height-5, self.corner_radius, outline="black", fill=fill_color, width=2)
-        self.text_id = self.create_text(self.width/2, self.height/2, text=self.text, fill="black", font=font)
+        self.button = self.create_rounded_rectangle(5, 5, self.width-5, self.height-5, self.corner_radius, outline=self.outline_color, fill=fill_color, width=2)
+        self.text_id = self.create_text(self.width/2, self.height/2, text=self.text, fill=self.text_color, font=font)
 
         self.bind("<Button-1>", self.on_click)
         self.bind("<Enter>", self.on_enter)

@@ -44,7 +44,7 @@ class Project :
         return self.sessType
     
     def getTriggeringQuestion(self):
-        return self.triggerQuestion
+        return self.projectTagsDataDict["data.trigQ.Name"]
     
     def getGenericQuestion(self):
         return self.genericQuestion

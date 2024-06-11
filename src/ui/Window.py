@@ -203,7 +203,7 @@ class Window(Tk):
         self.adminFrame.updateData()
 
         self.generationIdeaFrame = self.frames["FrameGeneration"]
-        self.generationIdeaFrame.loadProjectIdeas(self.xmlfileparser.getProject().getIdeas())
+        self.generationIdeaFrame.loadProjectData(self.xmlfileparser.getProject())
         
     def exportListOfIdeas(self):
         if self.openedProject == None:
