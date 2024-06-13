@@ -21,10 +21,31 @@ class XMLFileParser :
         self.currentIdeaObj = None
         self.currentIdeaNum = -100
 
+        self.currentRow = []
+        self.indices = []
+
     def openFile(self, filePath):
         self.project = Project()
+        self.projectMatrix = []
         self.currentFile = filePath
-        
+
+        tree = ET.parse(self.currentFile)
+        print("Current file : " + str(self.currentFile))
+        root = tree.getroot()
+
+        #matrix
+        matrixTag = root.find("matrix")
+        for line in matrixTag.findall('line'):
+            self.indices.append(int(line.find('id').text))
+            self.currentRow = []
+            for val in line.find('values').findall('value'):
+                self.currentRow.append(int(val.text))
+
+            self.projectMatrix.append(self.currentRow)
+
+        self.project.setMatrix(self.projectMatrix, self.indices)
+
+
         with open(filePath, 'r+', encoding='utf8') as f:
             # Conversion du fichier XML en dictionnaire
             tree = etree.parse(self.currentFile)
@@ -67,9 +88,9 @@ class XMLFileParser :
                                 if self.matrixElemCounter >= maty:
                                     self.projectDataDict[md + ".matrix"] = self.projectDataDict[md + ".matrix"] + "\r"
                                     self.matrixElemCounter = 0
-            
 
         self.project.setDataDict(self.projectDataDict)
+        
             
     def getProject(self) -> Project:
         return self.project
@@ -130,15 +151,6 @@ class XMLFileParser :
                                     self.projectDataDict[parents + "." +  str(self.currentClusterNum)] = root.attrib.get('name', root.text)      
                                 else :
                                     self.projectDataDict[parents] = root.attrib.get('name', root.text)
-
-                        if "data.matrix" in parents:
-                            if "id" in parents :
-                                self.valueCounter = 1
-                                self.lastMatriceID = str(root.attrib.get('name', root.text))
-                            elif "values.value" in parents :
-                                if self.valueCounter == 1 or self.valueCounter % 4 == 1: 
-                                    self.projectDataDict[parents + "." + self.lastMatriceID + "." + str(int((self.valueCounter - 1) / 4))] = str(root.attrib.get('name', root.text))
-                                self.valueCounter += 1
                     else :
                         if not md in parents.split('.'):
                             return

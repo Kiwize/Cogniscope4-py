@@ -5,6 +5,8 @@ class Project :
             
         self.projectTagsDataDict = dict
         self.ideas = []
+        self.matrix = []
+        self.indices = []
 
     def addIdea(self, idea: Idea):
         for a in self.ideas:
@@ -16,8 +18,27 @@ class Project :
     def setDataDict(self, dict : dict):
         self.projectTagsDataDict = dict
 
+    def setMatrix(self, matrix, indices):
+        self.matrix = matrix
+        self.indices = indices
+
+        for row in range(len(matrix)):
+            for col in range(len(matrix[0])):
+                print(matrix[row][col], end=" ")
+            print()
+
+        for i in indices:
+            print(i, end=" ")
+        print()
+
     def getIdeas(self) -> list[Idea]:
         return self.ideas
+    
+    def getMatrix(self):
+        return self.matrix
+    
+    def getIndices(self):
+        return self.indices
     
     def deleteIdeaFromNum(self, num):
         for idea in self.ideas:

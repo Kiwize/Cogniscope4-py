@@ -145,33 +145,20 @@ class FrameAdmin(Frame):
                 "EventName": self.eventName
             }
 
+            matrix = self.project.getMatrix()
+            indices = self.project.getIndices()
+
+            for i in range(len(indices)):
+                Label(self.projectMatriceFrame, text=str(indices[i]), bg="white", highlightbackground="#accb4d", highlightthickness=1).grid(column=indices[i], row=0, sticky="news")
+                Label(self.projectMatriceFrame, text=str(indices[i]), bg="white", highlightbackground="#accb4d", highlightthickness=1).grid(column=0, row=indices[i], sticky="news")
+
+            for row in range(len(matrix)):
+                for col in range(len(matrix[0])):
+                    Label(self.projectMatriceFrame, text=matrix[row][col], bg="white" if row % 2 == 0 else "#eaf2d3", highlightbackground="#accb4d", highlightthickness=1).grid(column=col + 1, row=row + 1, sticky="news")
 
             for key in self.dataDict:
                 if "data.matrix.line" in str(key):
                     self.matrix[str(key)] = str(self.dataDict[key])
-
-            lastMatrixId = -1
-            matrixLineCount = 0
-
-            for key in self.matrix:
-                self.projectMatriceFrame.columnconfigure(matrixLineCount, minsize=20)
-                self.projectMatriceFrame.rowconfigure(matrixLineCount, minsize=20)
-                if "line.values.value" in key:
-                    try:
-                        if int(key.split(".")[5]) != lastMatrixId:
-                            lastMatrixId = int(key.split(".")[5])
-
-                            print("LINE ID : " + str(key))
-                            matrixLineCount += 1
-                            Label(self.projectMatriceFrame, text=str(matrixLineCount), bg="white", highlightbackground="#accb4d", highlightthickness=1).grid(column=matrixLineCount, row=0, sticky="news")
-                            Label(self.projectMatriceFrame, text=str(matrixLineCount), bg="white", highlightbackground="#accb4d", highlightthickness=1).grid(column=0, row=matrixLineCount, sticky="news")
-
-                            Label(self.projectMatriceFrame, text=self.matrix[key], bg="white" if matrixLineCount % 2 == 0 else "#eaf2d3", highlightbackground="#accb4d", highlightthickness=1).grid(column=1, row=matrixLineCount, sticky="news")
-                        else:
-                            Label(self.projectMatriceFrame, text=self.matrix[key], bg="white" if matrixLineCount % 2 == 0 else "#eaf2d3", highlightbackground="#accb4d", highlightthickness=1).grid(column=(int(key.split(".")[6]) + 1), row=matrixLineCount, sticky="news")
-
-                    except IndexError:
-                        print("ERR")
 
             #self.iterate_values(project.getProjectTagsDataDict(), i)    
             c = 0
