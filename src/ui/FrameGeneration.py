@@ -1,4 +1,5 @@
 from tkinter import Frame, Label, Button, messagebox
+from tkinter.simpledialog import askstring
 from src.ui.components.RoundedButton import RoundedButton
 from src.model.Idea import Idea
 
@@ -44,18 +45,23 @@ class FrameGeneration(Frame):
         self.saveButton = RoundedButton(self.actionButtonsFrame, text="Save",corner_radius=0, text_color="white", outline_color="#4898e8", fill_color="#4898e8", hover_color="#30659b", command=lambda: self.saveIdeaToPDF())
         self.saveButton.grid(column=0, row=0, sticky="w")
 
-        self.actionButtonsFrame.grid_columnconfigure([0, 1], weight=0)
+        self.authorLabel = Label(self.actionButtonsFrame, text="...", font="Helvetica 12")
+        self.authorLabel.grid(column=2, row=0, sticky="news")
+
+        self.addAuthorButton = RoundedButton(self.actionButtonsFrame, text="Add Author", corner_radius=0, text_color="white", outline_color="#4898e8", fill_color="#4898e8", hover_color="#30659b", command=lambda: self.addAuthor())
+
+        self.actionButtonsFrame.grid_columnconfigure([0, 1, 3], weight=0)
         self.actionButtonsFrame.grid_columnconfigure(2, weight=5)
 
         self.addNewButton = RoundedButton(self.actionButtonsFrame, text="Add New",corner_radius=0, text_color="white", outline_color="#4898e8", fill_color="#4898e8", hover_color="#30659b", command=lambda: self.saveIdeaToPDF())
-        self.addNewButton.grid(column=2, row=0, sticky="e")
+        self.addNewButton.grid(column=3, row=0, sticky="e")
         self.addNewButton.configure(bg="#f0f0f0")
 
         self.ideaLabel = Label(self, text="No project opened...", highlightbackground="gray", highlightthickness=2, bg="white", font="Helvetica 17")
         self.ideaLabel.grid(column=0, row=2, sticky="news", columnspan=3, padx=8)
 
         self.ideaNavigationBar = Frame(self)
-        self.ideaNavigationBar.configure(bg="white")
+        self.ideaNavigationBar.configure(bg="white", background="white")
         self.ideaNavigationBar.grid(column=0, row=4, pady=6, columnspan=3)
 
         
@@ -65,11 +71,17 @@ class FrameGeneration(Frame):
     def addNewIdea(self):
          messagebox.showinfo("Not implemented yet", "This feature isn't completed yet !")
 
+    def addAuthor(self):
+        newAuthor = askstring("Add an author to this idea", "What's the name of the new author ?")
+        self.selectedIdea.setAuthor(newAuthor)
+        self.authorLabel.configure(text="Author : " + newAuthor)
+        self.drawButtons()
+
     def deleteIdea(self):
         delete = messagebox.askyesno("Please confirm", "Are you sure to delete the following idea ? :\r" + self.selectedIdea.getText() + "\r\rThis action cannot be reverted.")
 
         if not self.selectedIdea is None and delete:
-            self.ideas.remove(self.selectedIdea)
+            self.project.deleteIdeaFromNum(self.selectedIdea.getNum())
             self.drawButtons()
             self.showIdea(self.ideas[0])
 
@@ -102,9 +114,10 @@ class FrameGeneration(Frame):
         self.grid_rowconfigure([2], weight=5)
 
         for idea in self.ideas:
-            self.ideaNavigationBar.grid_columnconfigure(i, minsize=30)
-            RoundedButton(self.ideaNavigationBar, text=str(idea.getNum()), command=lambda a=idea: self.showIdea(a), text_color="#a1caf3", outline_color="#f0f0f0", minwidth=40, fill_color="#f0f0f0", hover_color="#f0f0f0", font="Helvetica 21 bold" if self.selectedIdea.getNum() is idea.getNum() else "Helvetica 13").grid(column=i, row=0, sticky="news")
-            i += 1
+            if not idea.isDeleted():
+                self.ideaNavigationBar.grid_columnconfigure(i, minsize=30)
+                RoundedButton(self.ideaNavigationBar, text=str(idea.getNum()), command=lambda a=idea: self.showIdea(a), text_color="#a1caf3", outline_color="#f0f0f0", minwidth=40, fill_color="#f0f0f0", hover_color="#f0f0f0", font="Helvetica 21 bold" if self.selectedIdea.getNum() is idea.getNum() else "Helvetica 13").grid(column=i, row=0, sticky="news")
+                i += 1
 
     def previousIdea(self):
         self.showIdea(self.findPreviousIdeaInList())
@@ -138,6 +151,14 @@ class FrameGeneration(Frame):
         self.selectedIdea = idea
         self.ideaLabel.configure(text=idea.getText())
         self.currentSelectedIdeaLabel.configure(text="Characteristic " + str(self.selectedIdea.getNum()))
+        if idea.getAuthor() is None:
+            self.authorLabel.grid_remove()
+            self.addAuthorButton.grid(column=2, row=0)
+        else:
+            if isinstance(self.actionButtonsFrame.grid_slaves(column=2, row=0)[0], RoundedButton):
+                self.addAuthorButton.grid_remove()
+                self.authorLabel.grid(column=2, row=0)
+            self.authorLabel.configure(text="Author : " + str(self.selectedIdea.getAuthor()))
         self.drawButtons()
         #print(self.selectedIdea.getText() + "   " + str(self.selectedIdea.getNum()))
 

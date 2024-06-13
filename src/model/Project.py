@@ -16,9 +16,16 @@ class Project :
     def setDataDict(self, dict : dict):
         self.projectTagsDataDict = dict
 
-    def getIdeas(self) -> list:
+    def getIdeas(self) -> list[Idea]:
         return self.ideas
-            
+    
+    def deleteIdeaFromNum(self, num):
+        for idea in self.ideas:
+            print(idea.getNum())
+            if str(idea.getNum()) == str(num):
+                idea.delete()
+                print("Deleting idea " + str(num))
+
     def getProjectTagsDataDict(self):
         return self.projectTagsDataDict
 

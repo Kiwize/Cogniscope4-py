@@ -69,7 +69,7 @@ class Window(Tk):
         self.menu_file = Menu(self.menu_bar, tearoff=0)
         self.menu_file.add_command(accelerator="Cmd+N")
         self.menu_file.add_command(accelerator="Cmd+O", command=self.open_file)
-        self.menu_file.add_command(accelerator="Cmd+S")
+        self.menu_file.add_command(accelerator="Cmd+S", command=self.saveProject)
         self.menu_file.add_command(accelerator="Shift+Cmd+S")
         self.menu_file.add_separator()
         self.menu_file.add_command(accelerator="Cmd+X", command=self.quit)
@@ -191,6 +191,9 @@ class Window(Tk):
 
     def quit(self):
         exit(1)
+
+    def saveProject(self):
+        self.xmlfileparser.saveContentToXML()
 
     def open_file(self):
         fn = askopenfilename()

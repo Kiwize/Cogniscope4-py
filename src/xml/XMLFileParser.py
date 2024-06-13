@@ -1,6 +1,7 @@
 #This file opens XMLs files from Concertina and Cognisope 3 to import them in Cogniscope 4
 from src.model.Project import Project
 from lxml import etree
+import xml.etree.ElementTree as ET
 from src.model.Idea import Idea
 
 class XMLFileParser :
@@ -114,7 +115,9 @@ class XMLFileParser :
                                     elif "stat" in parents:
                                         self.currentIdeaObj.setStat(root.attrib.get('name', root.text))
                                     elif "clarification" in parents:
-                                        self.currentIdeaObj.setClarification(root.attrib.get('name', root.text))             
+                                        self.currentIdeaObj.setClarification(root.attrib.get('name', root.text))
+                                    elif "author" in parents:
+                                        self.currentIdeaObj.setAuthor(root.attrib.get('name', root.text))             
                                         
                                     if not self.currentIdeaObj is None and self.currentIdeaObj.isComplete():
                                         self.project.addIdea(self.currentIdeaObj)    
@@ -150,6 +153,35 @@ class XMLFileParser :
 
         for elem in root:
             self.printRecur(elem)
+
+    def saveContentToXML(self):
+        tree = ET.parse(self.currentFile)
+        print("Current file : " + str(self.currentFile))
+        root = tree.getroot()
+        ideasTag = root.find('ideas')
+
+        #save ideas
+        for ideas in self.project.getIdeas():
+            for idea in ideasTag.findall('idea'):
+                if str(idea.find('Num').text) == str(ideas.getNum()):
+                    print("Saving idea " + str(ideas.getNum()))
+                    if not ideas.isDeleted():
+                        idea.find('IdeaText').text = ideas.getText()       
+                        idea.find('classNo').text = ideas.getClassNo()
+                        idea.find('votes').text = ideas.getVotes()
+                        idea.find('stat').text = ideas.getStat()
+                        idea.find('clarification').text = ideas.getClarification()
+                        idea.find('author').text = ideas.getAuthor()
+                    else :
+                        print("Deleting idea " + str(ideas.getNum()))
+                        ideasTag.remove(idea)
+                    break
+
+
+        tree.write(self.currentFile, encoding='utf-8', xml_declaration=True)
+
+
+
 
     
 

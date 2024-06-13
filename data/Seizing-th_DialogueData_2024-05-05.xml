@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <data>
   <projectData>
     <PrjName>Seizing the opportunities of safe, secure and trustworthy artificial intelligence systems for sustainable development</PrjName>
     <EventName>AI related Dialogues</EventName>
     <eventLoc>Virtual</eventLoc>
     <eventDates>2024-03-26 10:24:30 - 2024-03-27 10:24:30</eventDates>
-    <sponsor/>
+    <sponsor />
     <ideaNameSingular>Characteristic</ideaNameSingular>
     <ideaNamePlural>Characteristics</ideaNamePlural>
     <sessType>A</sessType>
@@ -40,28 +40,13 @@
   </clusters>
   <ideas>
     <idea>
-      <Num>1</Num>
-      <IdeaText>Cooperating with and providing capacity building and technical and financial assistance to developing countries.</IdeaText>
-      <classNo>[1]</classNo>
-      <votes>0</votes>
-      <stat>A</stat>
-      <clarification/>
-    </idea>
-    <idea>
-      <Num>2</Num>
-      <IdeaText>Closing the AI divides and other digital divides that exist between and within countries.</IdeaText>
-      <classNo>[1]</classNo>
-      <votes>1</votes>
-      <stat>A</stat>
-      <clarification/>
-    </idea>
-    <idea>
       <Num>3</Num>
       <IdeaText>Promoting equitable access to the benefits of AI systems.</IdeaText>
       <classNo>[1]</classNo>
       <votes>1</votes>
       <stat>A</stat>
-      <clarification/>
+      <clarification />
+      <author>Yiannis Laouris</author>
     </idea>
     <idea>
       <Num>4</Num>
@@ -69,7 +54,8 @@
       <classNo>[2]</classNo>
       <votes>1</votes>
       <stat>A</stat>
-      <clarification/>
+      <clarification />
+      <author>Yiannis Laouris</author>
     </idea>
     <idea>
       <Num>5</Num>
@@ -77,7 +63,8 @@
       <classNo>[2]</classNo>
       <votes>3</votes>
       <stat>A</stat>
-      <clarification/>
+      <clarification />
+      <author>Yiannis Laouris</author>
     </idea>
     <idea>
       <Num>6</Num>
@@ -85,7 +72,8 @@
       <classNo>[3]</classNo>
       <votes>2</votes>
       <stat>A</stat>
-      <clarification/>
+      <clarification />
+      <author>Yiannis Laouris</author>
     </idea>
     <idea>
       <Num>7</Num>
@@ -93,7 +81,8 @@
       <classNo>[3]</classNo>
       <votes>1</votes>
       <stat>A</stat>
-      <clarification/>
+      <clarification />
+      <author>Thomas PRADEAU</author>
     </idea>
     <idea>
       <Num>8</Num>
@@ -101,7 +90,8 @@
       <classNo>[4]</classNo>
       <votes>1</votes>
       <stat>A</stat>
-      <clarification/>
+      <clarification />
+      <author>Yiannis Laouris</author>
     </idea>
     <idea>
       <Num>9</Num>
@@ -109,7 +99,8 @@
       <classNo>[5]</classNo>
       <votes>3</votes>
       <stat>A</stat>
-      <clarification/>
+      <clarification />
+      <author>Yiannis Laouris</author>
     </idea>
     <idea>
       <Num>10</Num>
@@ -117,7 +108,8 @@
       <classNo>[2]</classNo>
       <votes>2</votes>
       <stat>A</stat>
-      <clarification/>
+      <clarification />
+      <author>Yiannis Laouris</author>
     </idea>
     <idea>
       <Num>11</Num>
@@ -125,7 +117,8 @@
       <classNo>[2]</classNo>
       <votes>0</votes>
       <stat>A</stat>
-      <clarification/>
+      <clarification />
+      <author>Yiannis Laouris</author>
     </idea>
     <idea>
       <Num>12</Num>
@@ -133,7 +126,8 @@
       <classNo>[2]</classNo>
       <votes>0</votes>
       <stat>A</stat>
-      <clarification/>
+      <clarification />
+      <author>Yiannis Laouris</author>
     </idea>
     <idea>
       <Num>13</Num>
@@ -141,7 +135,8 @@
       <classNo>[2]</classNo>
       <votes>0</votes>
       <stat>A</stat>
-      <clarification/>
+      <clarification />
+      <author>Yiannis Laouris</author>
     </idea>
   </ideas>
   <answerLog>4 &gt; 13 = Y\n</answerLog>
