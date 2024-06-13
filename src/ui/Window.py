@@ -207,6 +207,9 @@ class Window(Tk):
 
         self.generationIdeaFrame = self.frames["FrameGeneration"]
         self.generationIdeaFrame.loadProjectData(self.xmlfileparser.getProject())
+
+        self.clarificationIdeaFrame = self.frames["FrameClarification"]
+        self.clarificationIdeaFrame.loadProjectData(self.xmlfileparser.getProject())
         
     def exportListOfIdeas(self):
         if self.openedProject == None:

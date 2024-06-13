@@ -1,6 +1,7 @@
 from tkinter import Frame, Label, Button, messagebox
 from tkinter.simpledialog import askstring
 from src.ui.components.RoundedButton import RoundedButton
+from src.ui.components.TextManager import TextManager
 from src.model.Idea import Idea
 
 class FrameGeneration(Frame):
@@ -13,10 +14,10 @@ class FrameGeneration(Frame):
 
         self.frame_bg_color = "#dae8fc"
 
-        self.grid_columnconfigure([0, 1, 3, 4, 5], weight=0)
-        self.grid_columnconfigure([2], weight=5)
+        self.grid_columnconfigure([0, 1, 2, 4, 5,6], weight=0)
+        self.grid_columnconfigure([3], weight=5)
 
-        self.grid_rowconfigure([2], weight=5)
+        self.grid_rowconfigure([3], weight=5)
 
         self.title = Label(self, text="...", font="Helvetica 18 bold")
         self.title.grid(column=0, row=0, columnspan=3)
@@ -24,8 +25,11 @@ class FrameGeneration(Frame):
         self.currentSelectedIdeaLabel = Label(self, text="...", font="Helvetica 15")
         self.currentSelectedIdeaLabel.grid(column=0, row=1, sticky="w", pady=5, padx=10)
 
+        self.maxChar = Label(self, text="255", font="Helvetica 9")
+        self.maxChar.grid(column=0, row=2, columnspan=3, sticky="e")
+
         self.navigationButtons = Frame(self)
-        self.navigationButtons.grid(column=0, row=5, columnspan=3)
+        self.navigationButtons.grid(column=0, row=6, columnspan=3)
 
         self.previousButton = RoundedButton(self.navigationButtons, text="| <", font="Helvetica 12 bold", minwidth=20, outline_color="#f0f0f0", fill_color="#f0f0f0", command=lambda: self.previousIdea())
         self.previousButton.grid(column=0, row=0, sticky="e")
@@ -36,7 +40,7 @@ class FrameGeneration(Frame):
         self.nextButton.configure(bg="#f0f0f0")
 
         self.actionButtonsFrame = Frame(self, bg="#f0f0f0")
-        self.actionButtonsFrame.grid(column=0, row=3,columnspan=3, sticky="news")
+        self.actionButtonsFrame.grid(column=0, row=4,columnspan=3, sticky="news")
 
         self.deleteButton = RoundedButton(self.actionButtonsFrame, corner_radius=0, text="Delete", text_color="white", outline_color="#dd0000", fill_color="#dd0000", hover_color="#bb0000", command=lambda: self.deleteIdea())
         self.deleteButton.grid(column=1, row=0, sticky="w")
@@ -58,11 +62,11 @@ class FrameGeneration(Frame):
         self.addNewButton.configure(bg="#f0f0f0")
 
         self.ideaLabel = Label(self, text="No project opened...", highlightbackground="gray", highlightthickness=2, bg="white", font="Helvetica 17")
-        self.ideaLabel.grid(column=0, row=2, sticky="news", columnspan=3, padx=8)
+        self.ideaLabel.grid(column=0, row=3, sticky="news", columnspan=3, padx=8)
 
         self.ideaNavigationBar = Frame(self)
         self.ideaNavigationBar.configure(bg="white", background="white")
-        self.ideaNavigationBar.grid(column=0, row=4, pady=6, columnspan=3)
+        self.ideaNavigationBar.grid(column=0, row=5, pady=6, columnspan=3)
 
         
     def saveIdeaToPDF(self):
@@ -98,7 +102,7 @@ class FrameGeneration(Frame):
 
     def loadProjectData(self, project):
         self.project = project
-        self.title.configure(text=self.project.getTriggeringQuestion())
+        TextManager.adjust_label_font(self.title, self.project.getTriggeringQuestion())
 
         self.loadProjectIdeas(project.getIdeas())
 
@@ -111,7 +115,7 @@ class FrameGeneration(Frame):
         self.grid_columnconfigure([0, 2], weight=0)
         self.grid_columnconfigure([1], weight=5)
 
-        self.grid_rowconfigure([2], weight=5)
+        self.grid_rowconfigure([3], weight=5)
 
         for idea in self.ideas:
             if not idea.isDeleted():
@@ -149,7 +153,7 @@ class FrameGeneration(Frame):
     
     def showIdea(self, idea : Idea):
         self.selectedIdea = idea
-        self.ideaLabel.configure(text=idea.getText())
+        TextManager.adjust_label_font(self.ideaLabel, idea.getText(), availablewidth=1200, min_font_size=30, max_font_size=50)
         self.currentSelectedIdeaLabel.configure(text="Characteristic " + str(self.selectedIdea.getNum()))
         if idea.getAuthor() is None:
             self.authorLabel.grid_remove()
